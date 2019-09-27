@@ -1,0 +1,12 @@
+from node:alpine as build-stage
+
+WORKDIR /app
+
+COPY package.json package* ./
+RUN npm i
+COPY . ./
+RUN npm run build
+
+from abiosoft/caddy
+COPY --from=build-stage /app/build /www
+COPY docker/frontend/Caddyfile /etc/Caddyfile

@@ -1,0 +1,24 @@
+# Default compose file for development.
+# Should be used directly in development.
+
+version: "3.6"
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: ./docker/frontend/Dockerfile
+      args:
+        NODE_ENV: "development"
+    command: npm start
+    volumes:
+      - .:/code
+      - /code/node_modules
+    ports:
+      - "3000:3000"
+    networks:
+      - webnet
+    environment:
+      HOST: "0.0.0.0"
+
+networks:
+  webnet:
