@@ -22,7 +22,7 @@ export default function convertBytesToHuman(bytes) {
   if (bytes % 1 !== 0) {
     return false
   }
-  prefix = ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
+  var prefix = ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
   if (bytes < 1024) {
     return bytes.toString() + ' ' + prefix[0]
   }
