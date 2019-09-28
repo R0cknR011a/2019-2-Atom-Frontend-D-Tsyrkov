@@ -26,7 +26,7 @@ export default function convertBytesToHuman(bytes) {
   if (bytes < 1024) {
     return bytes.toString() + ' ' + prefix[0]
   }
-  i = 1
+  var i = 1
   while (Math.round(bytes / 2**(i * 10)).toString().length > 3) {
     i++
   }
