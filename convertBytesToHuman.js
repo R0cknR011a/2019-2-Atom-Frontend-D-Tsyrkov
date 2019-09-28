@@ -13,5 +13,22 @@
  */
 
 export default function convertBytesToHuman(bytes) {
-  // your solution goes here
+  if (typeof(bytes) !== 'number') {
+    return false
+  }
+  if (bytes < 0) {
+    return false
+  }
+  if (bytes % 1 !== 0) {
+    return false
+  }
+  prefix = ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
+  if (bytes < 1024) {
+    return bytes.toString() + ' ' + prefix[0]
+  }
+  i = 1
+  while (Math.round(bytes / 2**(i * 10)).toString().length > 3) {
+    i++
+  }
+  return (Math.round(bytes * 100 / 2**(i * 10)) / 100).toString() + ' ' + prefix[i]
 }
