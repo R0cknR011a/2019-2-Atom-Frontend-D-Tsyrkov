@@ -17,6 +17,7 @@ test('Возвращает false для неправильного типа да
 });
 
 test('Возвращает корректное значение для чисел', () => {
+  var i
   for (i = 0; i < 1024; i++) {
     expect(convertBytesToHuman(i).toBe(i.toString() + ' ' + 'B'))
   }
