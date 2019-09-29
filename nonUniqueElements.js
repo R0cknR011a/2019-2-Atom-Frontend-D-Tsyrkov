@@ -43,6 +43,7 @@ export default function nonUniqueElements(data) {
       }
       if (!found) {
         data.splice(i, 1)
+        i--
       }
     }
   }
