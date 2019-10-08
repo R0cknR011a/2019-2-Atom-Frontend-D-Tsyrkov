@@ -6,14 +6,13 @@ before_install:
   - cd web-components
 
 script:
-  - npm run test
-  - npm run build
+    - npm run build
 
 deploy:
   provider: pages
   skip_cleanup: true
   github_token: $repo_token
-  local_dir: web-components/bild
+  local_dir: web-components/build
   on:
     branch:
       - master
