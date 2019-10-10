@@ -1,29 +1,40 @@
 const template = document.createElement('template')
 template.innerHTML = `
     <style>
+
         form-input {
-            width: 100%;
+            width: auto;
         }
 
         .result {
-            color: red;
-            font-size: 5vw;
+            background: #ebdddd;
             display: flex;
             flex-direction: column;
             align-items: flex-end;
-            // padding: 2px;
-        }
-
-        .result > div {
-            // border: 1px solid red;
-            margin: 1vh 3vw;
+            padding: 50px;
+            overflow: hidden;
+            margin-top: 220px;
+            margin-bottom: 80px;
         }
 
         input[type=submit] {
             visibility: collapse;
         }
+
+        .header {
+            background: lightpink;
+            height: 250px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            text-align: center;
+        }
+
     </style>
     <form>
+        <div class="header">
+            <h1>Name</h1>
+        </div>
         <div class="result"></div>
         <form-input name="message-text" placeholder="Введите сообщение"></form-input>
     </form>
@@ -45,9 +56,8 @@ class MessageForm extends HTMLElement {
         for (var i = 0; i < localStorage.length - 1; i++) {
             var $message = document.createElement("message-container")
             var data = localStorage.getItem('message_' + i).split("&")
-            // console.log($message)
-            $message.message = data[0]
-            $message.date = data[1]
+            $message.setAttribute("message", data[0])
+            $message.setAttribute("date", data[1])
             this.$result.appendChild($message)
         }
     }

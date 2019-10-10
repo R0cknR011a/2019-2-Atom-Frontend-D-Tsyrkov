@@ -1,11 +1,30 @@
 const template = document.createElement('template')
 template.innerHTML = `
     <style>
-        div {
-            color: red
+        .message {
+            font-size: 50px;
+            font-family: Segoe UI;
+            overflow-wrap: break-word;
+            white-space: pre-wrap;
+            line-height: 45px;
+        }
+
+        .date {
+            display: inline-block;
+            font-size: 30px;
+            font-style: italic;
+        }
+
+        .wrapper {
+            background: lightblue;
+            border-radius: 15px;
+            width: auto;
+            padding: 15px;
+            margin-bottom: 50px;
+            max-width: 700px;
         }
     </style>
-    <div>
+    <div class="wrapper">
         <p class="message"></p>
         <span class="date"></span>
     </div>
@@ -26,13 +45,12 @@ class MessageContainer extends HTMLElement {
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
-        console.log("here")
         switch(name) {
             case "message":
-                this.$message.setAttribute(name, newValue)
+                this.$message.innerHTML = newValue
                 break;
             case "date":
-                this.$date.setAttribute(name, newValue)
+                this.$date.innerHTML = newValue
                 break;
         }
     }
