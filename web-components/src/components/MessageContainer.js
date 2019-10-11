@@ -16,7 +16,7 @@ template.innerHTML = `
         }
 
         .wrapper {
-            background: lightblue;
+            background: rgb(247, 182, 254);
             border-radius: 15px;
             width: auto;
             padding: 15px;

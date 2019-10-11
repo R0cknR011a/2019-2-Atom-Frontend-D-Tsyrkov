@@ -7,7 +7,6 @@ template.innerHTML = `
         }
 
         .result {
-            background: #ebdddd;
             display: flex;
             flex-direction: column;
             align-items: flex-end;
@@ -22,7 +21,7 @@ template.innerHTML = `
         }
 
         .header {
-            background: lightpink;
+            background: rgb(212, 1, 254);
             height: 250px;
             width: 100%;
             position: fixed;
