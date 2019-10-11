@@ -6,6 +6,7 @@ before_install:
   - cd web-components
 
 script:
+    - npm run test
     - npm run build
 
 deploy:
@@ -17,3 +18,4 @@ deploy:
     branch:
       - master
       - devel
+      - /^homework_\d+$/
