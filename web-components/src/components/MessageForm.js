@@ -1,4 +1,4 @@
-const template = document.createElement('template')
+const template = document.createElement('template');
 template.innerHTML = `
     <style>
 
@@ -37,49 +37,49 @@ template.innerHTML = `
         <div class="result"></div>
         <form-input name="message-text" placeholder="Введите сообщение"></form-input>
     </form>
-`
+`;
 
 class MessageForm extends HTMLElement {
-    constructor () {
-        super()
-        this._shadowRoot = this.attachShadow({ mode: 'open' })
-        this._shadowRoot.appendChild(template.content.cloneNode(true))
+  constructor() {
+    super();
+    this.shadowRoot = this.attachShadow({ mode: 'open' });
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
 
-        this.$form = this._shadowRoot.querySelector('form')
-        this.$input = this._shadowRoot.querySelector('form-input')
-        this.$result = this._shadowRoot.querySelector('.result')
+    this.$form = this.shadowRoot.querySelector('form');
+    this.$input = this.shadowRoot.querySelector('form-input');
+    this.$result = this.shadowRoot.querySelector('.result');
 
-        this.$form.addEventListener('submit', this._onSubmit.bind(this))
-        this.$form.addEventListener('keypress', this._onKeyPress.bind(this))
+    this.$form.addEventListener('submit', this.onSubmit.bind(this));
+    this.$form.addEventListener('keypress', this.onKeyPress.bind(this));
 
-        for (var i = 0; i < localStorage.length - 1; i++) {
-            var $message = document.createElement("message-container")
-            var data = localStorage.getItem('message_' + i).split("&")
-            $message.setAttribute("message", data[0])
-            $message.setAttribute("date", data[1])
-            this.$result.appendChild($message)
-        }
+    for (let i = 0; i < localStorage.length - 1; i += 1) {
+      const $message = document.createElement('message-container');
+      const data = localStorage.getItem(`message_${i}`).split('&');
+      $message.setAttribute('message', data[0]);
+      $message.setAttribute('date', data[1]);
+      this.$result.appendChild($message);
     }
+  }
 
-    _onSubmit (event) {
-        event.preventDefault()
-        if (this.$input.value.length > 0) {
-            var date = new Date()
-            var time = date.getHours() + ":" + date.getMinutes()
-            localStorage.setItem('message_' + (localStorage.length - 1).toString(), this.$input.value + "&" + time)
-            var $message = document.createElement("message-container")
-            $message.message = this.$input.value
-            $message.date = time
-            this.$result.appendChild($message)
-            this.$input.value = ""
-        }
+  onSubmit(event) {
+    event.preventDefault();
+    if (this.$input.value.length > 0) {
+      const date = new Date();
+      const time = `${date.getHours()}:${date.getMinutes()}`;
+      localStorage.setItem(`message_${(localStorage.length - 1).toString()}`, `${this.$input.value}&${time}`);
+      const $message = document.createElement('message-container');
+      $message.message = this.$input.value;
+      $message.date = time;
+      this.$result.appendChild($message);
+      this.$input.value = '';
     }
+  }
 
-    _onKeyPress (event) {
-        if (event.keyCode == 13) {
-            this.$form.dispatchEvent(new Event('submit'))
-        }
+  onKeyPress(event) {
+    if (event.keyCode === 13) {
+      this.$form.dispatchEvent(new Event('submit'));
     }
+  }
 }
 
-customElements.define('message-form', MessageForm)
+customElements.define('message-form', MessageForm);
