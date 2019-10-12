@@ -52,7 +52,7 @@ class MessageForm extends HTMLElement {
     this.$form.addEventListener('submit', this.onSubmit.bind(this));
     this.$form.addEventListener('keypress', this.onKeyPress.bind(this));
 
-    for (let i = 0; i < localStorage.length - 1; i += 1) {
+    for (let i = 0; i < localStorage.length; i += 1) {
       const $message = document.createElement('message-container');
       const data = localStorage.getItem(`message_${i}`).split('&');
       $message.setAttribute('message', data[0]);
@@ -65,8 +65,16 @@ class MessageForm extends HTMLElement {
     event.preventDefault();
     if (this.$input.value.length > 0) {
       const date = new Date();
-      const time = `${date.getHours()}:${date.getMinutes()}`;
-      localStorage.setItem(`message_${(localStorage.length - 1).toString()}`, `${this.$input.value}&${time}`);
+      let minutes = date.getMinutes().toString();
+      if (minutes.toString().length < 2) {
+        minutes = `0${minutes}`;
+      }
+      let hours = date.getHours().toString();
+      if (hours.toString().length < 2) {
+        hours = `0${hours}`;
+      }
+      const time = `${hours}:${minutes}`;
+      localStorage.setItem(`message_${(localStorage.length).toString()}`, `${this.$input.value}&${time}`);
       const $message = document.createElement('message-container');
       $message.message = this.$input.value;
       $message.date = time;
