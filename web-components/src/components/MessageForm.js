@@ -32,7 +32,7 @@ template.innerHTML = `
     </style>
     <form>
         <div class="header">
-            <h1>Name</h1>
+            <h1>User name</h1>
         </div>
         <div class="result"></div>
         <form-input name="message-text" placeholder="Введите сообщение"></form-input>
