@@ -86,6 +86,7 @@ class MessageForm extends HTMLElement {
       $message.date = time;
       this.$result.appendChild($message);
       this.$input.value = '';
+      window.scrollTo(0, document.body.scrollHeight);
     }
   }
 
