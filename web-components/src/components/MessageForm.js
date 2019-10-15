@@ -52,13 +52,16 @@ class MessageForm extends HTMLElement {
     this.$form.addEventListener('submit', this.onSubmit.bind(this));
     this.$form.addEventListener('keypress', this.onKeyPress.bind(this));
 
-    const messages = localStorage.getItem('messages').split('@');
-    for (let i = 0; i < messages.length; i += 1) {
-      const $message = document.createElement('message-container');
-      const data = messages[i].split('&');
-      $message.setAttribute('message', data[0]);
-      $message.setAttribute('date', data[1]);
-      this.$result.appendChild($message);
+    const data = localStorage.getItem('messages');
+    if (data === null) {
+      localStorage.setItem('messages', JSON.stringify([]));
+    } else {
+      JSON.parse(data).forEach((element) => {
+        const $message = document.createElement('message-container');
+        $message.setAttribute('message', element[0]);
+        $message.setAttribute('date', element[1]);
+        this.$result.appendChild($message);
+      });
     }
   }
 
@@ -67,20 +70,17 @@ class MessageForm extends HTMLElement {
     if (this.$input.value.length > 0) {
       const date = new Date();
       let minutes = date.getMinutes().toString();
-      if (minutes.toString().length < 2) {
+      if (minutes.length < 2) {
         minutes = `0${minutes}`;
       }
       let hours = date.getHours().toString();
-      if (hours.toString().length < 2) {
+      if (hours.length < 2) {
         hours = `0${hours}`;
       }
       const time = `${hours}:${minutes}`;
-      const data = localStorage.getItem('messages');
-      if (data === null) {
-        localStorage.setItem('messages', `${this.$input.value}&${time}`);
-      } else {
-        localStorage.setItem('messages', `${data}@${this.$input.value}&${time}`);
-      }
+      const data = JSON.parse(localStorage.getItem('messages'));
+      data.push([this.$input.value, time]);
+      localStorage.setItem('messages', JSON.stringify(data));
       const $message = document.createElement('message-container');
       $message.message = this.$input.value;
       $message.date = time;
