@@ -24,10 +24,9 @@ template.innerHTML = `
         }
 
         .create_chat {
-          // padding: 20px 40px;
           background-color: rgb(212, 1, 254);
-          position: relative;
-          top: 1200px;
+          position: fixed;
+          top: 1000px;
           left: 800px;
         }
 
@@ -35,7 +34,6 @@ template.innerHTML = `
           display: flex;
           flex-direction: column;
           overflow: hidden;
-          border: 1px solid red;
         }
     </style>
     <div class='header'>
@@ -46,24 +44,96 @@ template.innerHTML = `
     <div class='dialog_container'>
     </div>
     <button class='create_chat'><img src="https://cdn3.iconfinder.com/data/icons/othericons-3-0/50/pencil-48.png"></button>
+    <form></form>
 `;
 
 class MainScreen extends HTMLElement {
   constructor() {
     super();
+    this.input_status = false;
     this.shadowRoot = this.attachShadow({ mode: 'open' });
     this.shadowRoot.appendChild(template.content.cloneNode(true));
 
     this.$header = this.shadowRoot.querySelector('.header');
     this.$dialog = this.shadowRoot.querySelector('.dialog_container');
     this.$add_chat = this.shadowRoot.querySelector('.create_chat');
+    this.$name_input = this.shadowRoot.querySelector('form');
+    this.$route = this.shadowRoot.querySelector('chat-router');
 
     this.$add_chat.addEventListener('click', this.onclick.bind(this));
+    this.$name_input.addEventListener('submit', this.onSubmit.bind(this));
+    this.$name_input.addEventListener('keypress', this.onKeyPress.bind(this));
   }
 
-  onclick(event) {
-    const $dialog = document.createElement('dialog');
-    $message.setAttribute('message');
+  connectedCallback() {
+    const data = localStorage.getItem('users');
+    if (data === null) {
+      localStorage.setItem('users', JSON.stringify([]));
+    } else {
+      JSON.parse(data).forEach((element) => {
+        const $chat = document.createElement('dialog-container');
+        $chat.setAttribute('name', element);
+        const arr = JSON.parse(localStorage.getItem(element));
+        if (arr.length > 0) {
+          $chat.setAttribute('date', arr.slice(-1)[0][1]);
+          $chat.setAttribute('message', arr.slice(-1)[0][0]);
+        } else {
+          $chat.setAttribute('date', '<br>');
+          $chat.setAttribute('message', '<br>');
+        }
+        $chat.addEventListener('click', this.enterDialog.bind(this, element));
+        this.$dialog.appendChild($chat);
+      });
+    }
+  }
+
+  onclick() {
+    // const $dialog = document.createElement('dialog');
+    if (this.input_status) {
+      const $input = this.shadowRoot.querySelector('dialog-input');
+      $input.remove();
+      this.input_status = false;
+    } else {
+      const $input = document.createElement('dialog-input');
+      $input.setAttribute('placeholder', 'Введите имя...');
+      this.$name_input.appendChild($input);
+      this.input_status = true;
+    }
+    // $message.setAttribute('message', );
+  }
+
+  onSubmit(event) {
+    event.preventDefault();
+    const $input = this.shadowRoot.querySelector('dialog-input');
+    if ($input.value !== '') {
+      const data = JSON.parse(localStorage.getItem('users'));
+      if (data.includes($input.value)) {
+        alert('Данный диалог уже существует');
+      } else {
+        data.push($input.value);
+        localStorage.setItem('users', JSON.stringify(data));
+        localStorage.setItem($input.value, JSON.stringify([]));
+        const $chat = document.createElement('dialog-container');
+        $chat.setAttribute('name', $input.value);
+        $chat.setAttribute('date', '<br>');
+        $chat.setAttribute('message', '<br>');
+        $chat.addEventListener('click', this.enterDialog.bind(this, $input.value));
+        this.$dialog.appendChild($chat);
+        $input.value = '';
+      }
+    } else {
+      alert('Введите название диалога');
+    }
+  }
+
+  onKeyPress(event) {
+    if (event.keyCode === 13) {
+      this.$name_input.dispatchEvent(new Event('submit'));
+    }
+  }
+
+  set enter(value) {
+    this.enterDialog = value;
   }
 }
 

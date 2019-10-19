@@ -44,18 +44,18 @@ class MessageContainer extends HTMLElement {
     return ['message', 'date'];
   }
 
-  attributeChangedCallback(name, oldValue, newValue) {
-    switch (name) {
-      case 'message':
-        this.$message.innerHTML = newValue;
-        break;
-      case 'date':
-        this.$date.innerHTML = newValue;
-        break;
-      default:
-        break;
-    }
-  }
+  // attributeChangedCallback(name, oldValue, newValue) {
+  //   switch (name) {
+  //     case 'message':
+  //       this.$message.innerHTML = newValue;
+  //       break;
+  //     case 'date':
+  //       this.$date.innerHTML = newValue;
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // }
 
   get message() {
     return this.$message.value;
