@@ -28,24 +28,16 @@ class Dialog extends HTMLElement {
     this.$name = this.shadowRoot.querySelector('.name');
   }
 
-  static get observedAttributes() {
-    return ['message', 'date', 'name'];
+  set name(value) {
+    this.$name.innerHTML = value;
   }
 
-  attributeChangedCallback(name, oldValue, newValue) {
-    switch (name) {
-      case 'message':
-        this.$message.innerHTML = newValue;
-        break;
-      case 'date':
-        this.$date.innerHTML = newValue;
-        break;
-      case 'name':
-        this.$name.innerHTML = newValue;
-        break;
-      default:
-        break;
-    }
+  set message(value) {
+    this.$message.innerHTML = value;
+  }
+
+  set date(value) {
+    this.$date.innerHTML = value;
   }
 }
 

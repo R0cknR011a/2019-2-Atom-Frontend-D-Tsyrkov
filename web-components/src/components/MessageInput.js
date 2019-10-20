@@ -19,7 +19,7 @@ template.innerHTML = `
         }
         
     </style>
-    <input type="text">
+    <input type="text" placeholder="Введите сообщение...">
 `;
 
 class FormInput extends HTMLElement {
@@ -31,20 +31,12 @@ class FormInput extends HTMLElement {
     this.$input = this.shadowRoot.querySelector('input');
   }
 
-  static get observedAttributes() {
-    return ['name', 'value', 'placeholder', 'disabled'];
-  }
-
-  attributeChangedCallback(name, oldValue, newValue) {
-    this.$input.setAttribute(name, newValue);
-  }
-
   get value() {
     return this.$input.value;
   }
 
-  set value(newValue) {
-    this.$input.value = newValue;
+  set value(value) {
+    this.$input.value = value;
   }
 }
 

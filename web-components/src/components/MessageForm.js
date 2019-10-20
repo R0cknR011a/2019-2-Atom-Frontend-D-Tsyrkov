@@ -36,7 +36,7 @@ template.innerHTML = `
             <h1 class="name"></h1>
         </div>
         <div class="result"></div>
-        <form-input name="message-text" placeholder="Введите сообщение"></form-input>
+        <form-input></form-input>
     </form>
 `;
 
@@ -62,15 +62,12 @@ class MessageForm extends HTMLElement {
       [$message.message, $message.date] = element;
       this.$result.appendChild($message);
     });
+    this.$name.innerHTML = this.getAttribute('name');
     this.$exit.addEventListener('click', this.exitToMain.bind(this));
   }
 
   static get observedAttributes() {
     return ['name'];
-  }
-
-  attributeChangedCallback(name, oldValue, newValue) {
-    this.$name.innerHTML = newValue;
   }
 
   onSubmit(event) {
