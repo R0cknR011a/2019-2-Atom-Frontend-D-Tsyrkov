@@ -30,6 +30,10 @@ class SearchInput extends HTMLElement {
     this.$input = this.shadowRoot.querySelector('input');
   }
 
+  connectedCallback() {
+    this.$input.focus();
+  }
+
   get value() {
     return this.$input.value;
   }
