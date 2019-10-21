@@ -2,31 +2,56 @@ const template = document.createElement('template');
 template.innerHTML = `
     <style>
         .header {
-            background-color: rgb(212, 1, 254);
-            width: 100vw;
-            height: 7vh;
-            display: grid;
-            grid-template-columns: 10vw 80vw 10vw;
-            font-size: 30px;
-            // border: 1px solid red;
+          width: 100%;
+          height: 5vh;
+          background: rgb(212, 1, 254);
+          padding: 2vh;
+          display: flex;
+          justify-content: space-around;
+          align-items: flex-end;
+          font-size: 3vh;
+          position: fixed;
         }
 
         .menu {
-            background-color: rgb(212, 1, 254);
-            border: none;
-            outline: none;
+          outline: none;
+          flex-grow: 0;
+          width: 5vh;
+          height: 5vh;
+          margin-left: 1vh;
+          background-color: white;
+          border-radius: 50%;
+        }
+
+        div.menu img {
+          width: 65%;
+          padding-top: 1vh;
+          padding-left: 1vw;
         }
 
         .search {
-            background-color: rgb(212, 1, 254);
-            outline: none;
-            border: none;
+          outline: none;
+          flex: 2;
+          width: 2vh;
+          height: 4vh;
+          display: flex;
+          justify-content: flex-end;
+          margin-right: 5vh;
+          background: rgb(212, 1, 254);
+          border: none;
+        }
+
+        .messenger {
+          flex: 1;
+          flex-grow: 3;
+          margin: 1vh;
+          padding-left: 2vh;
         }
     </style>
     <div class='header'>
-        <button class="menu"><img src="https://img.icons8.com/ios-filled/50/000000/menu.png"></button>
-        <h1 style="margin-left: 5vw;">Messenger</h1>
-        <button class="search"><img src="https://img.icons8.com/android/48/000000/search.png"></button>
+        <div class="menu"><img src="https://img.icons8.com/ios-filled/50/000000/menu.png"></div>
+        <div class='messenger'>Messenger</div>
+        <div class="search"><img src="https://img.icons8.com/android/48/000000/search.png"></div>
     </div>
     <form></form>
 `;

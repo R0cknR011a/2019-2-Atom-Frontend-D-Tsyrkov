@@ -3,12 +3,14 @@ template.innerHTML = `
     <style>
         input {
           outline: none;
-          width: 100vw;
+          width: 80vw;
           height: 7vh;
           font-size: 5vw;
           padding: 25px 50px;
           position: fixed;
-          top: 1100px;
+          bottom: 15vh;
+          left: 4vw;
+          border-radius: 2vh;
           border-top: 5px solid silver;
         }
 

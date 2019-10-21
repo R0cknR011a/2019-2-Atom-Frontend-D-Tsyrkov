@@ -1,20 +1,20 @@
 const template = document.createElement('template');
 template.innerHTML = `
-    <style>
-        
+  <style>
+    .create_chat {
+      background-color: rgb(212, 1, 254);
+      position: fixed;
+      top: 90vh;
+      left: 90vw;
+    }
 
-        .create_chat {
-          background-color: rgb(212, 1, 254);
-          position: fixed;
-          top: 1000px;
-          left: 800px;
-        }
-
-        .dialog_container {
-          display: flex;
-          flex-direction: column;
-          overflow: hidden;
-        }
+    .dialog_container {
+      width: 100%;
+      background: #ebdddd;
+      padding-top: 9vh;
+      display: flex;
+      flex-direction: column-reverse;
+    }
     </style>
     <dialog-header></dialog-header>
     <div class='dialog_container'></div>
@@ -53,9 +53,10 @@ class MainScreen extends HTMLElement {
         if (arr.length > 0) {
           // eslint-disable-next-line prefer-destructuring
           [$chat.message, $chat.date] = arr.slice(-1)[0];
+          $chat.check = '&#10003';
         } else {
-          $chat.date = '<br>';
-          $chat.message = '<br>';
+          $chat.date = '';
+          $chat.message = '';
         }
         $chat.addEventListener('click', this.enterDialog.bind(this, element));
         this.$dialog.appendChild($chat);
@@ -72,7 +73,6 @@ class MainScreen extends HTMLElement {
 
   attributeChangedCallback(name, oldValue, newValue) {
     this.arr = [];
-    console.log(newValue);
     JSON.parse(localStorage.getItem('users')).forEach((element) => {
       if (element.slice(0, newValue.length) === newValue) {
         this.arr.push(element);
@@ -86,9 +86,10 @@ class MainScreen extends HTMLElement {
       if (arr.length > 0) {
         // eslint-disable-next-line prefer-destructuring
         [$chat.message, $chat.date] = arr.slice(-1)[0];
+        $chat.check = '&#10003';
       } else {
-        $chat.date = '<br>';
-        $chat.message = '<br>';
+        $chat.date = '';
+        $chat.message = '';
       }
       $chat.addEventListener('click', this.enterDialog.bind(this, element));
       this.$dialog.appendChild($chat);
@@ -124,8 +125,8 @@ class MainScreen extends HTMLElement {
         localStorage.setItem($input.value, JSON.stringify([]));
         const $chat = document.createElement('dialog-container');
         $chat.name = $input.value;
-        $chat.date = '<br>';
-        $chat.message = '<br>';
+        $chat.date = '';
+        $chat.message = '';
         $chat.addEventListener('click', this.enterDialog.bind(this, $input.value));
         this.$dialog.appendChild($chat);
         $input.value = '';

@@ -1,7 +1,6 @@
 const template = document.createElement('template');
 template.innerHTML = `
-    <style>
-    </style>
+    <style></style>
     <div class='router'></div>
 `;
 

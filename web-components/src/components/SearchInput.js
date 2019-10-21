@@ -5,11 +5,11 @@ template.innerHTML = `
             outline: none;
             border: 0;
             width: 100vw;
-            height: 7vh;
-            font-size: 5vw;
+            height: 4vh;
+            font-size: 2vw;
             // padding: 25px 50px;
-            // position: fixed;
-            top: 500px;
+            position: absolute;
+            margin-top: 6.5vh;
             border-top: 5px solid silver;
         }
 

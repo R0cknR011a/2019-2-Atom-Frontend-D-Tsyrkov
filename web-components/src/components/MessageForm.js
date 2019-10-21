@@ -4,6 +4,8 @@ template.innerHTML = `
         form-input {
             width: auto;
         }
+
+
         .result {
             display: flex;
             flex-direction: column;
@@ -13,27 +15,42 @@ template.innerHTML = `
             margin-top: 80px;
             margin-bottom: 80px;
         }
+
+
         input[type=submit] {
             visibility: collapse;
         }
+
+
         .header {
             background: rgb(212, 1, 254);
             height: 7vh;
-            font-size: 30px;
+            font-size: 4vh;
+            font-weight: bold;
             width: 100vw;
             position: fixed;
             top: 0;
-            display: grid;
-            grid-template-columns: 10vw 90vw;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
         }
+
+        .name {
+          text-align: center;
+          flex: 2;
+        }
+
         .exit {
           background-color: rgb(212, 1, 254);
+          // border: none;
+          padding-left: 2vh;
+          flex: 0;
         }
     </style>
     <form>
         <div class="header">
-            <button class='exit'><img src="https://img.icons8.com/material-two-tone/48/000000/left.png"></button>
-            <h1 class="name"></h1>
+            <div class='exit'><img src="https://img.icons8.com/material-two-tone/48/000000/left.png"></div>
+            <p class="name"></p>
         </div>
         <div class="result"></div>
         <form-input></form-input>
