@@ -40,37 +40,12 @@ class MessageContainer extends HTMLElement {
     this.$date = this.shadowRoot.querySelector('.date');
   }
 
-  static get observedAttributes() {
-    return ['message', 'date'];
+  set message(value) {
+    this.$message.innerHTML = value;
   }
 
-  attributeChangedCallback(name, oldValue, newValue) {
-    switch (name) {
-      case 'message':
-        this.$message.innerHTML = newValue;
-        break;
-      case 'date':
-        this.$date.innerHTML = newValue;
-        break;
-      default:
-        break;
-    }
-  }
-
-  get message() {
-    return this.$message.value;
-  }
-
-  set message(newValue) {
-    this.$message.innerHTML = newValue;
-  }
-
-  get date() {
-    return this.$date.value;
-  }
-
-  set date(newValue) {
-    this.$date.innerHTML = newValue;
+  set date(value) {
+    this.$date.innerHTML = value;
   }
 }
 
