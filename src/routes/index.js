@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Router, Route, Switch } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Router, Switch } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import styled from '@emotion/styled';
 import Dialogs from '../components/Dialogs';

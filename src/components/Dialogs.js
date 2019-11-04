@@ -9,6 +9,7 @@ import styles from '../styles/dialog-form.module.css';
 function Dialogs(props) {
 	const [chats, setChats] = useState([]);
 	const [toggleAdd, setAdd] = useState(false);
+	const {redirect} = props;
 
 	useEffect(() => {
 		const data = localStorage.getItem('users');
@@ -32,13 +33,14 @@ function Dialogs(props) {
 						message={message}
 						check={check}
 						key={list.length}
-						redirect={(name) => props.redirect(name)}
+						redirect={(name) => redirect(name)}
 					/>,
 				);
+				return 0;
 			});
 			setChats(list);
 		}
-	}, []);
+	}, [redirect]);
 
 	const addToggle = () => {
 		setAdd(!toggleAdd);
@@ -85,7 +87,7 @@ function Dialogs(props) {
 			<div className={styles.dialog_header}>
 				<div>&#9776;</div>
 				<div className={styles.header_text}>Messenger</div>
-				<div>&#128270;</div>
+				<span role="img" aria-label="smth">&#128270;</span>
 			</div>
 			<div className={styles.chat_list}>{chats}</div>
 			<button className={styles.add_button} onClick={() => addToggle()}>
@@ -108,6 +110,7 @@ function DialogContainer(props) {
 				<img
 					src="https://icon-library.net//images/free-profile-icon/free-profile-icon-4.jpg"
 					className={styles.avatar_img}
+					alt=''
 				/>
 			</div>
 			<div>

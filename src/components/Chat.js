@@ -24,9 +24,10 @@ function Chat(props) {
 					<div>{element[1]}</div>
 				</div>,
 			);
+			return 0;
 		});
 		setMessages(list);
-	}, []);
+	}, [props.name]);
 
 	function MessageInput() {
 		const [currentMessage, setCurrentMessage] = useState('');
