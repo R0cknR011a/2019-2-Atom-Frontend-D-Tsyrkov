@@ -1,3 +1,8 @@
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable react/button-has-type */
+/* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react';
 import styles from '../styles/dialog-form.module.css';
 
@@ -10,15 +15,14 @@ function Dialogs(props) {
 		if (data === null) {
 			localStorage.setItem('users', JSON.stringify([]));
 		} else {
-			let list = [];
+			const list = [];
 			JSON.parse(data).map((element) => {
-				let data = JSON.parse(localStorage.getItem(element)).pop();
+				const info = JSON.parse(localStorage.getItem(element)).pop();
 				let message = '';
 				let date = '';
 				let check = false;
-				if (data !== undefined) {
-					message = data[0];
-					date = data[1];
+				if (info !== undefined) {
+					[message, date] = info;
 					check = true;
 				}
 				list.push(
@@ -40,13 +44,13 @@ function Dialogs(props) {
 		setAdd(!toggleAdd);
 	};
 
-	function AddInput(props) {
+	function AddInput() {
 		const [value, setValue] = useState('');
 
-		const HandleSubmit = (event, value) => {
+		const HandleSubmit = (event) => {
 			event.preventDefault();
 			if (value !== '') {
-				let data = JSON.parse(localStorage.getItem('users'));
+				const data = JSON.parse(localStorage.getItem('users'));
 				setChats([
 					...chats,
 					<DialogContainer

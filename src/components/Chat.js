@@ -1,3 +1,7 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/prop-types */
 import React, { useState, useEffect, useRef } from 'react';
 import styles from '../styles/message-form.module.css';
 
@@ -12,7 +16,7 @@ function Chat(props) {
 	useEffect(scrollToBottom, [messages]);
 
 	useEffect(() => {
-		let list = [];
+		const list = [];
 		JSON.parse(localStorage.getItem(props.name)).map((element) => {
 			list.push(
 				<div key={list.length} className={styles.message_container}>
@@ -24,8 +28,8 @@ function Chat(props) {
 		setMessages(list);
 	}, []);
 
-	function MessageInput(props) {
-		const [current_message, setCurrentMessage] = useState('');
+	function MessageInput() {
+		const [currentMessage, setCurrentMessage] = useState('');
 		const input = useRef(null);
 
 		const handleChange = (event) => {
@@ -45,27 +49,27 @@ function Chat(props) {
 				const data = JSON.parse(localStorage.getItem(props.name));
 				let minutes = date.getMinutes().toString();
 				if (minutes.length === 1) {
-					minutes = '0' + minutes;
+					minutes = `0${  minutes}`;
 				}
 				let hours = date.getHours();
 				if (hours.length === 1) {
-					hours = '0' + hours;
+					hours = `0${  hours}`;
 				}
 				setMessages([
 					...messages,
 					<div className={styles.message_container} key={data.length}>
 						<div>{value}</div>
-						<div>{hours + ':' + minutes}</div>
+						<div>{`${hours  }:${  minutes}`}</div>
 					</div>,
 				]);
 
-				data.push([value, hours + ':' + minutes]);
+				data.push([value, `${hours  }:${  minutes}`]);
 				localStorage.setItem(props.name, JSON.stringify(data));
 			}
 		};
 
 		return (
-			<form onSubmit={(event) => sendMessage(event, current_message.trim())}>
+			<form onSubmit={(event) => sendMessage(event, currentMessage.trim())}>
 				<input
 					type="text"
 					onChange={(event) => handleChange(event)}
