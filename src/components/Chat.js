@@ -1,23 +1,21 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable react/prop-types */
 import React, { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 import styles from '../styles/message-form.module.css';
 
-function Chat(props) {
+
+function Chat({ name, redirect }) {
 	const [messages, setMessages] = useState([]);
 	const myRef = useRef(null);
 	
 	const scrollToBottom = () => {
 		myRef.current.scrollIntoView({block: 'end'});
-	}
+	};
 
 	useEffect(scrollToBottom, [messages]);
 
 	useEffect(() => {
 		const list = [];
-		JSON.parse(localStorage.getItem(props.name)).map((element) => {
+		JSON.parse(localStorage.getItem(name)).map((element) => {
 			list.push(
 				<div key={list.length} className={styles.message_container}>
 					<div>{element[0]}</div>
@@ -27,7 +25,7 @@ function Chat(props) {
 			return 0;
 		});
 		setMessages(list);
-	}, [props.name]);
+	}, [name]);
 
 	function MessageInput() {
 		const [currentMessage, setCurrentMessage] = useState('');
@@ -39,7 +37,7 @@ function Chat(props) {
 
 		const inputFocus = () => {
 			input.current.focus();
-		}
+		};
 
 		useEffect(inputFocus, [input]);
 
@@ -47,12 +45,12 @@ function Chat(props) {
 			event.preventDefault();
 			if (value !== '') {
 				const date = new Date();
-				const data = JSON.parse(localStorage.getItem(props.name));
+				const data = JSON.parse(localStorage.getItem(name));
 				let minutes = date.getMinutes().toString();
 				if (minutes.length === 1) {
 					minutes = `0${  minutes}`;
 				}
-				let hours = date.getHours();
+				let hours = date.getHours().toString();
 				if (hours.length === 1) {
 					hours = `0${  hours}`;
 				}
@@ -65,7 +63,7 @@ function Chat(props) {
 				]);
 
 				data.push([value, `${hours  }:${  minutes}`]);
-				localStorage.setItem(props.name, JSON.stringify(data));
+				localStorage.setItem(name, JSON.stringify(data));
 			}
 		};
 
@@ -84,18 +82,24 @@ function Chat(props) {
 	return (
 		<div className={styles.wrapper}>
 			<div className={styles.chat_header}>
-				<div
+				<div role="button" tabIndex={0}
 					className={styles.chat_exit_button}
-					onClick={() => props.redirect()}
+					onClick={() => redirect()}
+					onKeyPress={() => {}}
 				>
 					&#8678;
 				</div>
-				<div className={styles.chat_name}>{props.name}</div>
+				<div className={styles.chat_name}>{name}</div>
 			</div>
 			<div className={styles.messages_list} ref={myRef}>{messages}</div>
-			<MessageInput name={props.name} />
+			<MessageInput name={name} />
 		</div>
 	);
 }
 
-export default Chat
+Chat.propTypes = {
+	name: PropTypes.string.isRequired,
+	redirect: PropTypes.func.isRequired,
+};
+
+export default Chat;

@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
+
 const Intro = styled.p`
-	font-size: large;
+  font-size: large;
 `;
 
 function Counter({ increment, incrementIfOdd, decrement, counter }) {

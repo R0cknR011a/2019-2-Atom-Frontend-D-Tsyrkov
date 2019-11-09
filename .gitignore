@@ -130,6 +130,7 @@ bower_components/
 *.log
 
 dist/
+build/
 
 #### eslint ####
 # These rules are required to lint .eslintrc.js and friends.

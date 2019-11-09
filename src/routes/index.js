@@ -6,9 +6,9 @@ import Dialogs from '../components/Dialogs';
 import Chat from '../components/Chat';
 
 const Container = styled.div`
-	background-color: rgb(20, 20, 20);
-	height: 100vh;
-	overflow: auto;
+  background-color: rgb(20, 20, 20);
+  height: 100vh;
+  overflow: auto;
 `;
 export const history = createBrowserHistory();
 

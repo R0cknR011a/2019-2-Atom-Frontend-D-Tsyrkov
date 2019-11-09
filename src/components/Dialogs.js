@@ -1,15 +1,10 @@
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable react/button-has-type */
-/* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import styles from '../styles/dialog-form.module.css';
 
-function Dialogs(props) {
+function Dialogs({ redirect }) {
 	const [chats, setChats] = useState([]);
 	const [toggleAdd, setAdd] = useState(false);
-	const {redirect} = props;
 
 	useEffect(() => {
 		const data = localStorage.getItem('users');
@@ -58,7 +53,7 @@ function Dialogs(props) {
 					<DialogContainer
 						name={value}
 						key={data.length}
-						redirect={(name) => props.redirect(name)}
+						redirect={(name) => redirect(name)}
 					/>,
 				]);
 				data.push(value);
@@ -90,21 +85,22 @@ function Dialogs(props) {
 				<span role="img" aria-label="smth">&#128270;</span>
 			</div>
 			<div className={styles.chat_list}>{chats}</div>
-			<button className={styles.add_button} onClick={() => addToggle()}>
+			<button className={styles.add_button} onClick={() => addToggle()} type="button">
 				&#9998;
 			</button>
 			{toggleAdd ? (
-				<AddInput redirect={(name) => props.redirect(name)} />
+				<AddInput redirect={(name) => redirect(name)} />
 			) : null}
 		</div>
 	);
 }
 
-function DialogContainer(props) {
+function DialogContainer({ name, message, date, check, redirect }) {
 	return (
-		<div
+		<div role="button" tabIndex={0}
 			className={styles.dialog_container}
-			onClick={() => props.redirect(props.name)}
+			onClick={() => redirect(name)}
+			onKeyPress={() => {}}
 		>
 			<div className={styles.dialog_avatar}>
 				<img
@@ -114,17 +110,29 @@ function DialogContainer(props) {
 				/>
 			</div>
 			<div>
-				<div className={styles.dialog_name}>{props.name}</div>
-				<div className={styles.dialog_message}>{props.message}</div>
+				<div className={styles.dialog_name}>{name}</div>
+				<div className={styles.dialog_message}>{message}</div>
 			</div>
 			<div>
-				<div className={styles.dialog_date}>{props.date}</div>
-				{props.check ? (
+				<div className={styles.dialog_date}>{date}</div>
+				{check ? (
 					<div className={styles.dialog_check}>&#10004;</div>
 				) : null}
 			</div>
 		</div>
 	);
 }
+
+DialogContainer.propTypes = {
+	name: PropTypes.string.isRequired,
+	message: PropTypes.string.isRequired,
+	date: PropTypes.string.isRequired,
+	check: PropTypes.bool.isRequired,
+	redirect: PropTypes.func.isRequired,
+};
+
+Dialogs.propTypes = {
+	redirect: PropTypes.func.isRequired,
+};
 
 export default Dialogs;

@@ -1,7 +1,7 @@
 {
-	"generator-track-mail": {
-		"promptValues": {
-			"authorName": "M Komitsky"
-		}
-	}
+  "generator-track-mail": {
+    "promptValues": {
+      "authorName": "M Komitsky"
+    }
+  }
 }

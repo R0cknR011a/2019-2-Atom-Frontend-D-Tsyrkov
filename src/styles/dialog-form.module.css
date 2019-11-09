@@ -1,90 +1,90 @@
 .dialog_header {
-	display: flex;
-	font-size: 5vmin;
-	width: 100%;
-	background-color: rgb(70, 70, 70);
-	color: white;
-	position: fixed;
-	top: 0;
+  display: flex;
+  font-size: 5vmin;
+  width: 100%;
+  background-color: rgb(70, 70, 70);
+  color: rgb(255, 255, 255);
+  position: fixed;
+  top: 0;
 }
 
 .header_text {
-	flex-grow: 2;
+  flex-grow: 2;
 }
 
 .chat_list {
-	margin-top: 7vmin;
-	display: flex;
-	flex-direction: column-reverse;
-	width: 100vw;
-	color: white;
+  margin-top: 7vmin;
+  display: flex;
+  flex-direction: column-reverse;
+  width: 100vw;
+  color: rgb(255, 255, 255);
 }
 
 .add_button {
-	position: fixed;
-	top: 85vh;
-	left: 85vw;
-	padding: 1vmin;
-	border-radius: 50%;
-	outline: none;
-	background-color: rgb(50, 50, 50);
-	border-color: rgb(150, 150, 150);
-	font-size: 3vh;
-	color: white;
+  position: fixed;
+  top: 85vh;
+  left: 85vw;
+  padding: 1vmin;
+  border-radius: 50%;
+  outline: none;
+  background-color: rgb(50, 50, 50);
+  border-color: rgb(150, 150, 150);
+  font-size: 3vh;
+  color: rgb(255, 255, 255);
 }
 
 .avatar_img {
-	color: white;
-	padding-left: 1vw;
-	padding-top: 1vh;
-	width: 8vmin;
+  color: rgb(255, 255, 255);
+  padding-left: 1vw;
+  padding-top: 1vh;
+  width: 8vmin;
 }
 
 .add_input {
-	position: fixed;
-	top: 70vh;
-	left: 10vw;
-	width: 80vw;
-	height: 6vmin;
-	padding-left: 2vw;
-	font-size: 3vmin;
-	background-color: rgb(10, 10, 10);
-	border-color: rgb(60, 60, 60);
-	color: white;
-	outline: none;
+  position: fixed;
+  top: 70vh;
+  left: 10vw;
+  width: 80vw;
+  height: 6vmin;
+  padding-left: 2vw;
+  font-size: 3vmin;
+  background-color: rgb(10, 10, 10);
+  border-color: rgb(60, 60, 60);
+  color: rgb(255, 255, 255);
+  outline: none;
 }
 
 .dialog_container {
-	cursor: pointer;
-	border-bottom: 0.5vh solid rgb(50, 50, 50);
-	display: grid;
-	grid-template-columns: 10vw 80vw 10vw;
-	grid-template-rows: 5vmin 5vmin;
-	grid-template-areas:
-		'avatar name date'
-		'avatar last_message check';
-	font-size: 3vmin;
+  cursor: pointer;
+  border-bottom: 0.5vh solid rgb(50, 50, 50);
+  display: grid;
+  grid-template-columns: 10vw 80vw 10vw;
+  grid-template-rows: 5vmin 5vmin;
+  grid-template-areas:
+    'avatar name date'
+    'avatar last_message check';
+  font-size: 3vmin;
 }
 
 .dialog_avatar {
-	grid-area: avatar;
+  grid-area: avatar;
 }
 
 .dialog_name {
-	grid-area: name;
+  grid-area: name;
 }
 
 .dialog_message {
-	grid-area: last_message;
-	max-height: 4.5vmin;
-	margin-right: 3vmin;
-	overflow: hidden;
+  grid-area: last_message;
+  max-height: 4.5vmin;
+  margin-right: 3vmin;
+  overflow: hidden;
 }
 
 .dialog_date {
-	grid-area: date;
+  grid-area: date;
 }
 
 .dialog_check {
-	grid-area: check;
+  grid-area: check;
 }

@@ -1,9 +1,9 @@
 {
-	"name": "technoatom-d-tsyrkov",
-	"homepage": "https://r0cknr011a.github.io/2019-2-Atom-Frontend-D-Tsyrkov",
-	"description": "Frontend Project 2019 Autumn-Winter",
-	"version": "0.0.1",
-	"author": "D Tsytkov",
+	"name": "track-mail-2019-m-komitsky",
+	"homepage": "https://your_gh_login.github.io/your_repo_name",
+	"description": "Mail.Ru Group Frontend Track course, 2019",
+	"version": "0.1.0",
+	"author": "M Komitsky",
 	"dependencies": {
 		"@emotion/core": "^10.0.22",
 		"@emotion/styled": "^10.0.22",
@@ -61,22 +61,22 @@
 		"format": "prettier --write '**/*.{js,jsx,json,md}'",
 		"format:changed": "pretty-quick",
 		"format:staged": "pretty-quick --staged",
-		"eslint-check": "eslint --print-config .eslintrc.js | eslint-config-prettier-check",
-		"lint": "npm run lint:js && npm run lint:dup",
-		"lint-fix": "eslint --fix",
-		"clean": "rm -rf dist",
-		"test": "npm run test:engine && npm run lint",
+		"lint": "npm run lint:js && npm run lint:dup && npm run lint:css",
+		"lint:check": "eslint --print-config .eslintrc.json | eslint-config-prettier-check",
+		"lint:js:fix": "npm run lint:js -- --fix",
+		"lint:js": "eslint src/**/*.js -c .eslintrc.json",
+		"lint:css": "stylelint src/**/*.{scss,css} && stylelint --rd src/**/*.{scss,css}",
+		"lint:dup": "jscpd -g --threshold=1 tests docker",
+		"clean": "rm -rf build",
+		"test": "npm run test:engine && npm run test:unit && npm run lint",
 		"test:engine": "check-engine",
 		"test:sec": "npm audit || true",
-		"test:unit": "cross-env NODE_ENV=test jest",
-		"lint:js": "eslint src/**/*.js -c .eslintrc.json",
-		"lint:css": "stylelint 'client/**/*.{scss,css}' && stylelint --rd 'client/**/*.{scss,css}'",
-		"lint:dup": "jscpd -g --threshold=1 client tests docker",
+		"test:unit": "react-scripts test",
 		"ci": "npm run test && npm run build && npm run test:sec"
 	},
 	"husky": {
 		"hooks": {
-			"pre-commit": "pretty-quick --staged"
+			"pre-commit": "npm run lint && npm run format:staged"
 		}
 	},
 	"engines": {
