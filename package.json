@@ -1,9 +1,9 @@
 {
-	"name": "track-mail-2019-m-komitsky",
-	"homepage": "https://your_gh_login.github.io/your_repo_name",
+	"name": "track-mail-2019-d-tsyrkov",
+	"homepage": "https://r0cknr011a.github.io/2019-2-Atom-Frontend-D-Tsyrkov",
 	"description": "Mail.Ru Group Frontend Track course, 2019",
 	"version": "0.1.0",
-	"author": "M Komitsky",
+	"author": "D Tsyrkov",
 	"dependencies": {
 		"@emotion/core": "^10.0.22",
 		"@emotion/styled": "^10.0.22",
