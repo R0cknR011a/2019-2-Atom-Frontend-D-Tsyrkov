@@ -1,3 +1,1 @@
-# 2019-1-Atom-Frontend-D-Tsyrkov
-
-Учебный проект
+# Track Mail 2019 D Tsyrkov
