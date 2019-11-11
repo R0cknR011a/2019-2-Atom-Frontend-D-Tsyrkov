@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styles from '../styles/dialog-form.module.css';
 
+
 function Dialogs({ redirect }) {
 	const [chats, setChats] = useState([]);
 	const [toggleAdd, setAdd] = useState(false);
+	const [menu, setMenu] = useState(false);
 
 	useEffect(() => {
 		const data = localStorage.getItem('users');
@@ -39,6 +41,10 @@ function Dialogs({ redirect }) {
 
 	const addToggle = () => {
 		setAdd(!toggleAdd);
+	};
+
+	const menuToggle = () => {
+		setMenu(!menu);
 	};
 
 	function AddInput() {

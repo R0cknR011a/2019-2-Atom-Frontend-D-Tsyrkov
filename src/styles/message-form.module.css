@@ -26,6 +26,7 @@
 .chat_exit_button {
   padding-left: 0.5em;
   cursor: pointer;
+  outline: none;
 }
 
 .message_container {

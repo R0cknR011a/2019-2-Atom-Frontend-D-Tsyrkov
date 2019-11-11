@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Router, Switch } from 'react-router-dom';
+import { Router, Switch, Route } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import styled from '@emotion/styled';
 import Dialogs from '../components/Dialogs';
 import Chat from '../components/Chat';
+import Settings from '../components/Settings';
 
 const Container = styled.div`
   background-color: rgb(20, 20, 20);
@@ -29,7 +30,12 @@ function Routes(props) {
 		<Router history={history}>
 			<Container>
 				<Switch>
-					{component}
+					<Route exact path="/">
+						{component}
+					</Route>
+					<Route path="/settings">
+						<Settings />
+					</Route>
 				</Switch>
 			</Container>
 		</Router>

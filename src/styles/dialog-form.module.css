@@ -64,6 +64,7 @@
     'avatar name date'
     'avatar last_message check';
   font-size: 3vmin;
+  outline: none;
 }
 
 .dialog_avatar {
