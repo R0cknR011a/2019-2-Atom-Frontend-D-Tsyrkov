@@ -44,7 +44,10 @@
   color: rgb(255, 255, 255);
 }
 
-.main_form div {
+.main_avatar,
+.form_bio,
+.form_fullname,
+.form_username {
   background-color: rgb(60, 60, 60);
   border-radius: 0.5em;
   margin-top: 5vh;

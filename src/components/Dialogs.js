@@ -6,7 +6,6 @@ import styles from '../styles/dialog-form.module.css';
 function Dialogs({ redirect }) {
 	const [chats, setChats] = useState([]);
 	const [toggleAdd, setAdd] = useState(false);
-	const [menu, setMenu] = useState(false);
 
 	useEffect(() => {
 		const data = localStorage.getItem('users');
@@ -41,10 +40,6 @@ function Dialogs({ redirect }) {
 
 	const addToggle = () => {
 		setAdd(!toggleAdd);
-	};
-
-	const menuToggle = () => {
-		setMenu(!menu);
 	};
 
 	function AddInput() {
