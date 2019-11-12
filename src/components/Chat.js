@@ -27,7 +27,7 @@ function Chat({ match, history }) {
 			return 0;
 		});
 		setMessages(list);
-	}, []);
+	}, [name]);
 
 	function MessageInput() {
 		const [currentMessage, setCurrentMessage] = useState('');
