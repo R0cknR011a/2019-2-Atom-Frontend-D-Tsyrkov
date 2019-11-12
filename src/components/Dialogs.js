@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import styles from '../styles/dialog-form.module.css';
 
 
-function Dialogs({ redirect }) {
+function Dialogs({ history }) {
 	const [chats, setChats] = useState([]);
 	const [toggleAdd, setAdd] = useState(false);
 
@@ -29,14 +30,16 @@ function Dialogs({ redirect }) {
 						message={message}
 						check={check}
 						key={list.length}
-						redirect={(name) => redirect(name)}
+						enter={() => history.push(`/chatWith/${element}`)}
 					/>,
 				);
 				return 0;
 			});
 			setChats(list);
 		}
-	}, [redirect]);
+	}, [history]);
+
+	
 
 	const addToggle = () => {
 		setAdd(!toggleAdd);
@@ -54,7 +57,7 @@ function Dialogs({ redirect }) {
 					<DialogContainer
 						name={value}
 						key={data.length}
-						redirect={(name) => redirect(name)}
+						enter={() => history.push(`/chatWith/${value}`)}
 					/>,
 				]);
 				data.push(value);
@@ -90,19 +93,15 @@ function Dialogs({ redirect }) {
 				&#9998;
 			</button>
 			{toggleAdd ? (
-				<AddInput redirect={(name) => redirect(name)} />
+				<AddInput />
 			) : null}
 		</div>
 	);
 }
 
-function DialogContainer({ name, message, date, check, redirect }) {
+function DialogContainer({ name, message, date, check, enter }) {
 	return (
-		<div role="button" tabIndex={0}
-			className={styles.dialog_container}
-			onClick={() => redirect(name)}
-			onKeyPress={() => {}}
-		>
+		<div className={styles.dialog_container} onClick={() => enter()} role='button' tabIndex={0} onKeyPress={() => {}}>
 			<div className={styles.dialog_avatar}>
 				<img
 					src="https://icon-library.net//images/free-profile-icon/free-profile-icon-4.jpg"
@@ -129,11 +128,13 @@ DialogContainer.propTypes = {
 	message: PropTypes.string.isRequired,
 	date: PropTypes.string.isRequired,
 	check: PropTypes.bool.isRequired,
-	redirect: PropTypes.func.isRequired,
+	enter :PropTypes.func.isRequired,
 };
 
 Dialogs.propTypes = {
-	redirect: PropTypes.func.isRequired,
+	history: PropTypes.shape({
+		push: PropTypes.func.isRequired,
+	}).isRequired,
 };
 
-export default Dialogs;
+export default withRouter(Dialogs);

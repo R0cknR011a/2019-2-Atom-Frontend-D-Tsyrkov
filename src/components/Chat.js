@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styles from '../styles/message-form.module.css';
 
 
-function Chat({ name, redirect }) {
+function Chat({ match, history }) {
 	const [messages, setMessages] = useState([]);
 	const myRef = useRef(null);
+	const {name} = match.params;
 	
 	const scrollToBottom = () => {
 		myRef.current.scrollIntoView({block: 'end'});
@@ -25,7 +27,7 @@ function Chat({ name, redirect }) {
 			return 0;
 		});
 		setMessages(list);
-	}, [name]);
+	}, []);
 
 	function MessageInput() {
 		const [currentMessage, setCurrentMessage] = useState('');
@@ -84,8 +86,8 @@ function Chat({ name, redirect }) {
 			<div className={styles.chat_header}>
 				<div role="button" tabIndex={0}
 					className={styles.chat_exit_button}
-					onClick={() => redirect()}
 					onKeyPress={() => {}}
+					onClick={() => history.push('/')}
 				>
 					&#8678;
 				</div>
@@ -98,8 +100,14 @@ function Chat({ name, redirect }) {
 }
 
 Chat.propTypes = {
-	name: PropTypes.string.isRequired,
-	redirect: PropTypes.func.isRequired,
+	match: PropTypes.shape({
+		params: PropTypes.shape({
+			name: PropTypes.string.isRequired
+		})
+	}).isRequired,
+	history: PropTypes.shape({
+		push: PropTypes.func.isRequired,
+	}).isRequired,
 };
 
-export default Chat;
+export default withRouter(Chat);
