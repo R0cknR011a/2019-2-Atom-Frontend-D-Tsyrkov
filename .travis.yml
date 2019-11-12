@@ -14,8 +14,6 @@ deploy:
   github_token: $repo_token
   local_dir: build
   on:
-    branches:
-      only:
-        - master
-        - devel
-        - /^homework_\d+$/
+    branch:
+      - master
+      - homework_06
