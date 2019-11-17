@@ -36,10 +36,7 @@ function Dialogs({ history }) {
 				return 0;
 			});
 			setChats(list);
-		}
-	}, [history]);
-
-	
+		}}, [history]);
 
 	const addToggle = () => {
 		setAdd(!toggleAdd);
@@ -84,9 +81,9 @@ function Dialogs({ history }) {
 	return (
 		<div className={styles.dialog_form}>
 			<div className={styles.dialog_header}>
-				<div>&#9776;</div>
+				<div className={styles.header_menu}>&#9776;</div>
 				<div className={styles.header_text}>Messenger</div>
-				<span role="img" aria-label="smth">&#128270;</span>
+				<span role="img" aria-label="smth" className={styles.header_find}>&#128270;</span>
 			</div>
 			<div className={styles.chat_list}>{chats}</div>
 			<button className={styles.add_button} onClick={() => addToggle()} type="button">

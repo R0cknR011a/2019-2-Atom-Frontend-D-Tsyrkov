@@ -2,15 +2,16 @@ import React, { useState, useEffect, useRef } from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styles from '../styles/message-form.module.css';
+import image from './paper-clip-6-64.png';
 
 
 function Chat({ match, history }) {
 	const [messages, setMessages] = useState([]);
-	const myRef = useRef(null);
+	const inputRef = useRef(null);
 	const {name} = match.params;
 	
 	const scrollToBottom = () => {
-		myRef.current.scrollIntoView({block: 'end'});
+		inputRef.current.scrollIntoView({block: 'end'});
 	};
 
 	useEffect(scrollToBottom, [messages]);
@@ -31,17 +32,78 @@ function Chat({ match, history }) {
 
 	function MessageInput() {
 		const [currentMessage, setCurrentMessage] = useState('');
-		const input = useRef(null);
+		const [attach, setAttach] = useState(false);
+		const [preview, setPreview] = useState(false);
+		const [attachments, setAttachments] = useState([]);
+		const CurrMessageInput = useRef(null);
+		const FileInputRef = useRef(null);
+
+		const focusInput = () => {
+			FileInputRef.current.click();
+		};
+
+		const previewFiles = (files) => {
+			if (files.length > 10) {
+				alert('There is a file limit of 10 maximum');
+			} else {
+				setPreview(true);
+				const fileList = [];
+				for (let i = 0; i < files.length; i+=1) {
+					const fileURL = window.URL.createObjectURL(files[i]);
+					fileList.push(
+						<div key={i} className={styles.attach_container}>
+							<img
+								src={fileURL}
+								alt="img"
+								className={styles.attach_img}
+								onLoad={() => {
+									window.URL.revokeObjectURL(fileURL);
+								}} />
+						</div>
+					);
+				};
+				setAttachments(fileList);
+			}
+		};
+
+		const attachMenu =
+		<div className={styles.attach_menu}>
+			<div className={styles.location} onClick={() => sendLocation()} role='button' tabIndex={0} onKeyPress={() => {}}>Location</div>
+			<div className={styles.media} onClick={() => focusInput()} role='button' tabIndex={0} onKeyPress={() => {}}>Image</div>
+			<input type="file" multiple accept="image/*" style={{'display': 'none'}} onChange={(event) => previewFiles(event.target.files)} ref={FileInputRef} />
+			<div className={styles.audio}>Audio</div>
+		</div>;
+
+		const attachmentList =
+		<div className={styles.attachments_list}>
+			{attachments}
+		</div>;
+
+		const sendLocation = () => {
+			if ('geolocation' in navigator) {
+				navigator.geolocation.getCurrentPosition((position) => {
+					const pos = `https://www.openstreetmap.org/#map=18/${position.coords.latitude}/${position.coords.longitude}`;
+					setMessages([
+						...messages,
+						<div key={messages.length} className={styles.message_container}>
+							<a href={pos}>{`Ваше местоположение: ${pos}`}</a>
+						</div>
+					]);
+				});
+			} else  {
+				alert('Geolocation is not respond');
+			}
+		};
 
 		const handleChange = (event) => {
 			setCurrentMessage(event.target.value);
 		};
 
 		const inputFocus = () => {
-			input.current.focus();
+			CurrMessageInput.current.focus();
 		};
 
-		useEffect(inputFocus, [input]);
+		useEffect(inputFocus, [CurrMessageInput]);
 
 		const sendMessage = (event, value) => {
 			event.preventDefault();
@@ -50,33 +112,51 @@ function Chat({ match, history }) {
 				const data = JSON.parse(localStorage.getItem(name));
 				let minutes = date.getMinutes().toString();
 				if (minutes.length === 1) {
-					minutes = `0${  minutes}`;
+					minutes = `0${minutes}`;
 				}
 				let hours = date.getHours().toString();
 				if (hours.length === 1) {
-					hours = `0${  hours}`;
+					hours = `0${hours}`;
 				}
 				setMessages([
 					...messages,
 					<div className={styles.message_container} key={data.length}>
 						<div>{value}</div>
-						<div>{`${hours  }:${  minutes}`}</div>
+						<div>{`${hours}:${minutes}`}</div>
 					</div>,
 				]);
 
-				data.push([value, `${hours  }:${  minutes}`]);
+				data.push([value, `${hours}:${minutes}`]);
 				localStorage.setItem(name, JSON.stringify(data));
 			}
 		};
 
 		return (
 			<form onSubmit={(event) => sendMessage(event, currentMessage.trim())}>
-				<input
-					type="text"
-					onChange={(event) => handleChange(event)}
-					className={styles.message_input}
-					ref={input}
-				/>
+				{attach ? attachMenu : null}
+				<div
+					className={styles.input_form}
+					onDragEnter={(event) => event.preventDefault()}
+					onDragOver={(event) => event.preventDefault()}
+					onDrop={(event) => {
+						event.preventDefault();
+						previewFiles(event.dataTransfer.files);
+					}}
+				>
+					<img
+						src={image}
+						className={styles.attach_icon}
+						onClick={() => setAttach(!attach)}
+						alt="img"
+					/>
+					<input
+						type="text"
+						onChange={(event) => handleChange(event)}
+						className={styles.message_input}
+						ref={CurrMessageInput}
+					/>
+				</div>
+				{preview ? attachmentList : null}
 			</form>
 		);
 	}
@@ -93,7 +173,7 @@ function Chat({ match, history }) {
 				</div>
 				<div className={styles.chat_name}>{name}</div>
 			</div>
-			<div className={styles.messages_list} ref={myRef}>{messages}</div>
+			<div className={styles.messages_list} ref={inputRef}>{messages}</div>
 			<MessageInput name={name} />
 		</div>
 	);
