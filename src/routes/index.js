@@ -18,9 +18,9 @@ function Routes(props) {
 		<Router history={history}>
 			<Container>
 				<Switch>
-					<Route path="/" component={Dialogs} />
-					<Route path="/settings" component={Settings} />
-					<Route path="/chatWith/:name" component={Chat} />
+					<Route exact path={`${process.env.PUBLIC_URL}/`} component={Dialogs} />
+					<Route path={`${process.env.PUBLIC_URL}/settings`} component={Settings} />
+					<Route path={`${process.env.PUBLIC_URL}/chatWith/:name`} component={Chat} />
 				</Switch>
 			</Container>
 		</Router>
