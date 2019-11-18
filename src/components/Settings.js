@@ -54,7 +54,7 @@ function Settings() {
 
 	return (
 		<div className={styles.wrapper}>
-			{toHome ? <Redirect to="/" /> : null}
+			{toHome ? <Redirect to={`${process.env.PUBLIC_URL}/`} /> : null}
 			<div className={styles.header}>
 				<div onClick={() => {setHome(true);}} role="button" tabIndex={0} onKeyPress={() => {}} className={styles.exit}>&#8678;</div>
 				<div className={styles.header_settings}>Settings</div>

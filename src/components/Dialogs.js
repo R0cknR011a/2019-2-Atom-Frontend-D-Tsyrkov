@@ -30,7 +30,7 @@ function Dialogs({ history }) {
 						message={message}
 						check={check}
 						key={list.length}
-						enter={() => history.push(`/chatWith/${element}`)}
+						enter={() => history.push(`${process.env.PUBLIC_URL}/chatWith/${element}`)}
 					/>,
 				);
 				return 0;
@@ -57,7 +57,7 @@ function Dialogs({ history }) {
 					<DialogContainer
 						name={value}
 						key={data.length}
-						enter={() => history.push(`/chatWith/${value}`)}
+						enter={() => history.push(`${process.env.PUBLIC_URL}/chatWith/${value}`)}
 					/>,
 				]);
 				data.push(value);

@@ -87,7 +87,7 @@ function Chat({ match, history }) {
 				<div role="button" tabIndex={0}
 					className={styles.chat_exit_button}
 					onKeyPress={() => {}}
-					onClick={() => history.push('/')}
+					onClick={() => history.push(`${process.env.PUBLIC_URL}/`)}
 				>
 					&#8678;
 				</div>
