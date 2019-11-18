@@ -33,7 +33,6 @@ function Dialogs({ history }) {
 						enter={() => history.push(`${process.env.PUBLIC_URL}/chatWith/${element}`)}
 					/>,
 				);
-				return 0;
 			});
 			setChats(list);
 		}

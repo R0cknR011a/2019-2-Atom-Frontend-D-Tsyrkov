@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Redirect } from 'react-router-dom';
-// import { withRouter } from 'react-router-dom';
-// import PropTypes from 'prop-types';
+import { Redirect, withRouter } from 'react-router-dom';
 import styles from '../styles/settings-form.module.css';
 
 function Settings() {
@@ -91,4 +89,4 @@ function Settings() {
 	);
 }
 
-export default Settings;
+export default withRouter(Settings);
