@@ -3,6 +3,8 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styles from '../styles/message-form.module.css';
 import image from './paper-clip-6-64.png';
+import play from './play-icon-white-png-8.jpg';
+import stop from './Stop-circle-01.svg';
 
 
 function Chat({ match, history }) {
@@ -35,6 +37,9 @@ function Chat({ match, history }) {
 		const [attach, setAttach] = useState(false);
 		const [preview, setPreview] = useState(false);
 		const [attachments, setAttachments] = useState([]);
+		const [audioToggle, setAudioToggle] = useState(false);
+		const [recording, setRecording] = useState(false);
+		const audioRef = useRef(null);
 		const CurrMessageInput = useRef(null);
 		const FileInputRef = useRef(null);
 
@@ -66,12 +71,54 @@ function Chat({ match, history }) {
 			}
 		};
 
+		const audio = <audio constrols ref={audioRef} src="" />;
+
+		async function getMedia() {
+			let stream = null;
+			try {
+				const constrains = { audio: true };
+				stream = await navigator.mediaDevices.getUserMedia(constrains);
+	
+				const mediaRecorder = new MediaRecorder(stream);
+				let chunks = [];
+				mediaRecorder.addEventListener('stop', (event) => {
+					const blob = new Blob(chunks, { type: mediaRecorder.mimeType });
+					chunks = [];
+					const audioURL = URL.createObjectURL(blob);
+					audioRef.src = audioURL;
+				});
+				mediaRecorder.addEventListener('dataavailable', (event) => {
+					chunks.push(event.data);
+				});
+				
+				return mediaRecorder;
+			} catch(err) {
+				console.log(err);
+				return -1;
+			}
+		}
+
+		const recordAudio = (recordingStatus) => {
+			const record = getMedia();
+			// if (recordingStatus) {
+			// 	record.stop();
+			// 	setRecording(false);
+			// 	setAudioToggle(true);
+			// } else {
+			// 	record.start();
+			// 	setRecording(true);
+			// }
+		};
+
 		const attachMenu =
 		<div className={styles.attach_menu}>
 			<div className={styles.location} onClick={() => sendLocation()} role='button' tabIndex={0} onKeyPress={() => {}}>Location</div>
 			<div className={styles.media} onClick={() => focusInput()} role='button' tabIndex={0} onKeyPress={() => {}}>Image</div>
 			<input type="file" multiple accept="image/*" style={{'display': 'none'}} onChange={(event) => previewFiles(event.target.files)} ref={FileInputRef} />
-			<div className={styles.audio}>Audio</div>
+			<div className={styles.audio} onClick={() => recordAudio(recording)} role='button' tabIndex={0} onKeyPress={() => {}}>
+				Audio
+				{recording ? <img src={stop} style={{'height': '1em'}} /> : <img src={play} style={{'height': '1em'}} />}
+			</div>
 		</div>;
 
 		const attachmentList =
@@ -101,9 +148,7 @@ function Chat({ match, history }) {
 
 		const inputFocus = () => {
 			CurrMessageInput.current.focus();
-		};
-
-		useEffect(inputFocus, [CurrMessageInput]);
+		}; 
 
 		const sendMessage = (event, value) => {
 			event.preventDefault();
@@ -131,6 +176,10 @@ function Chat({ match, history }) {
 			}
 		};
 
+		useEffect(inputFocus, [CurrMessageInput]);
+
+		useEffect(() => console.log('rerender'));
+
 		return (
 			<form onSubmit={(event) => sendMessage(event, currentMessage.trim())}>
 				{attach ? attachMenu : null}
@@ -157,6 +206,7 @@ function Chat({ match, history }) {
 					/>
 				</div>
 				{preview ? attachmentList : null}
+				{audioToggle ? audio: null}
 			</form>
 		);
 	}
