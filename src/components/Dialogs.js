@@ -5,6 +5,7 @@ import styles from '../styles/dialog-form.module.css';
 
 
 function Dialogs({ history }) {
+	const [menu, setMenu] = useState(false);
 	const [chats, setChats] = useState([]);
 	const [toggleAdd, setAdd] = useState(false);
 
@@ -39,7 +40,14 @@ function Dialogs({ history }) {
 		}
 	}, [history]);
 
-	
+	const menuItem =
+	<div onClick={() => history.push(`${process.env.PUBLIC_URL}/settings`)}
+		role="button"
+		tabIndex={0}
+		onKeyPress={() => {}}
+		className={styles.header_menu}>
+			Settings
+	</div>;
 
 	const addToggle = () => {
 		setAdd(!toggleAdd);
@@ -84,10 +92,11 @@ function Dialogs({ history }) {
 	return (
 		<div className={styles.dialog_form}>
 			<div className={styles.dialog_header}>
-				<div>&#9776;</div>
+				<div onClick={() => setMenu(!menu)} role="button" tabIndex={0} onKeyPress={() => {}}>&#9776;</div>
 				<div className={styles.header_text}>Messenger</div>
 				<span role="img" aria-label="smth">&#128270;</span>
 			</div>
+			{menu ? menuItem : null}
 			<div className={styles.chat_list}>{chats}</div>
 			<button className={styles.add_button} onClick={() => addToggle()} type="button">
 				&#9998;
