@@ -18,7 +18,7 @@ function Routes(props) {
 		<Router history={history}>
 			<Container>
 				<Switch>
-					<Route exact path="/" component={Dialogs} />
+					<Route path="/" component={Dialogs} />
 					<Route path="/settings" component={Settings} />
 					<Route path="/chatWith/:name" component={Chat} />
 				</Switch>
