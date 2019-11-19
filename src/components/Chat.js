@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styles from '../styles/message-form.module.css';
 
 
-function Chat({ match, history }) {
+function Chat({ match }) {
 	const [messages, setMessages] = useState([]);
 	const myRef = useRef(null);
 	const {name} = match.params;
@@ -50,21 +50,21 @@ function Chat({ match, history }) {
 				const data = JSON.parse(localStorage.getItem(name));
 				let minutes = date.getMinutes().toString();
 				if (minutes.length === 1) {
-					minutes = `0${  minutes}`;
+					minutes = `0${minutes}`;
 				}
 				let hours = date.getHours().toString();
 				if (hours.length === 1) {
-					hours = `0${  hours}`;
+					hours = `0${hours}`;
 				}
 				setMessages([
 					...messages,
 					<div className={styles.message_container} key={data.length}>
 						<div>{value}</div>
-						<div>{`${hours  }:${  minutes}`}</div>
+						<div>{`${hours}:${minutes}`}</div>
 					</div>,
 				]);
 
-				data.push([value, `${hours  }:${  minutes}`]);
+				data.push([value, `${hours}:${minutes}`]);
 				localStorage.setItem(name, JSON.stringify(data));
 			}
 		};
@@ -84,13 +84,11 @@ function Chat({ match, history }) {
 	return (
 		<div className={styles.wrapper}>
 			<div className={styles.chat_header}>
-				<div role="button" tabIndex={0}
-					className={styles.chat_exit_button}
-					onKeyPress={() => {}}
-					onClick={() => history.push(`${process.env.PUBLIC_URL}/`)}
-				>
-					&#8678;
-				</div>
+				<Link to="/">
+					<div className={styles.chat_exit_button}>
+						&#8678;
+					</div>
+				</Link>
 				<div className={styles.chat_name}>{name}</div>
 			</div>
 			<div className={styles.messages_list} ref={myRef}>{messages}</div>
@@ -105,9 +103,6 @@ Chat.propTypes = {
 			name: PropTypes.string.isRequired
 		})
 	}).isRequired,
-	history: PropTypes.shape({
-		push: PropTypes.func.isRequired,
-	}).isRequired,
 };
 
-export default withRouter(Chat);
+export default Chat;

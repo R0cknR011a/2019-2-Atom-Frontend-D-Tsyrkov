@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { withRouter } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import styles from '../styles/settings-form.module.css';
 
-function Settings({ history }) {
+function Settings() {
 	const [fullname, setFullname] = useState('');
 	const [username, setUsername] = useState('@');
 	const [bio, setBio] = useState('');
@@ -53,7 +52,9 @@ function Settings({ history }) {
 	return (
 		<div className={styles.wrapper}>
 			<div className={styles.header}>
-				<div onClick={() => history.push(`${process.env.PUBLIC_URL}/`)} role="button" tabIndex={0} onKeyPress={() => {}} className={styles.exit}>&#8678;</div>
+				<Link to="/" >
+					<div className={styles.exit}>&#8678;</div>
+				</Link>
 				<div className={styles.header_settings}>Settings</div>
 				<div className={styles.header_save} onClick={() => handleSubmit()} role="button" tabIndex={0} onKeyPress={() => {}}>&#10004;</div>
 			</div>
@@ -88,10 +89,4 @@ function Settings({ history }) {
 	);
 }
 
-Settings.propTypes = {
-	history: PropTypes.shape({
-		push: PropTypes.func.isRequired,
-	}).isRequired,
-};
-
-export default withRouter(Settings);
+export default Settings;

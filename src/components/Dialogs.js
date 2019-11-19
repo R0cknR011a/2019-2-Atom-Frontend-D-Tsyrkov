@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styles from '../styles/dialog-form.module.css';
 
 
-function Dialogs({ history }) {
+function Dialogs() {
 	const [menu, setMenu] = useState(false);
 	const [chats, setChats] = useState([]);
 	const [toggleAdd, setAdd] = useState(false);
@@ -31,23 +31,20 @@ function Dialogs({ history }) {
 						message={message}
 						check={check}
 						key={list.length}
-						enter={() => history.push(`${process.env.PUBLIC_URL}/chatWith/${element}`)}
 					/>,
 				);
 				return 0;
 			});
 			setChats(list);
 		}
-	}, [history]);
+	}, []);
 
 	const menuItem =
-	<div onClick={() => history.push(`${process.env.PUBLIC_URL}/settings`)}
-		role="button"
-		tabIndex={0}
-		onKeyPress={() => {}}
-		className={styles.header_menu}>
-			Settings
-	</div>;
+	<Link to="/settings">
+		<div className={styles.header_menu}>
+				Settings
+		</div>
+	</Link>;
 
 	const addToggle = () => {
 		setAdd(!toggleAdd);
@@ -65,7 +62,6 @@ function Dialogs({ history }) {
 					<DialogContainer
 						name={value}
 						key={data.length}
-						enter={() => history.push(`${process.env.PUBLIC_URL}/chatWith/${value}`)}
 					/>,
 				]);
 				data.push(value);
@@ -108,27 +104,29 @@ function Dialogs({ history }) {
 	);
 }
 
-function DialogContainer({ name, message, date, check, enter }) {
+function DialogContainer({ name, message, date, check }) {
 	return (
-		<div className={styles.dialog_container} onClick={() => enter()} role='button' tabIndex={0} onKeyPress={() => {}}>
-			<div className={styles.dialog_avatar}>
-				<img
-					src="https://icon-library.net//images/free-profile-icon/free-profile-icon-4.jpg"
-					className={styles.avatar_img}
-					alt=''
-				/>
+		<Link to={`/chatWith/${name}`}>
+			<div className={styles.dialog_container}>
+				<div className={styles.dialog_avatar}>
+					<img
+						src="https://icon-library.net//images/free-profile-icon/free-profile-icon-4.jpg"
+						className={styles.avatar_img}
+						alt=''
+					/>
+				</div>
+				<div>
+					<div className={styles.dialog_name}>{name}</div>
+					<div className={styles.dialog_message}>{message}</div>
+				</div>
+				<div>
+					<div className={styles.dialog_date}>{date}</div>
+					{check ? (
+						<div className={styles.dialog_check}>&#10004;</div>
+					) : null}
+				</div>
 			</div>
-			<div>
-				<div className={styles.dialog_name}>{name}</div>
-				<div className={styles.dialog_message}>{message}</div>
-			</div>
-			<div>
-				<div className={styles.dialog_date}>{date}</div>
-				{check ? (
-					<div className={styles.dialog_check}>&#10004;</div>
-				) : null}
-			</div>
-		</div>
+		</Link>
 	);
 }
 
@@ -137,13 +135,6 @@ DialogContainer.propTypes = {
 	message: PropTypes.string.isRequired,
 	date: PropTypes.string.isRequired,
 	check: PropTypes.bool.isRequired,
-	enter :PropTypes.func.isRequired,
 };
 
-Dialogs.propTypes = {
-	history: PropTypes.shape({
-		push: PropTypes.func.isRequired,
-	}).isRequired,
-};
-
-export default withRouter(Dialogs);
+export default Dialogs;

@@ -50,3 +50,11 @@
   outline: none;
   border-color: rgb(60, 60, 60);
 }
+
+a,
+a:hover,
+a:focus,
+a:active {
+  text-decoration: none;
+  color: rgb(255, 255, 255);
+}

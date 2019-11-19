@@ -80,3 +80,11 @@ textarea {
 .avatar_img {
   width: 4em;
 }
+
+a,
+a:hover,
+a:focus,
+a:active {
+  text-decoration: none;
+  color: rgb(255, 255, 255);
+}
