@@ -36,8 +36,10 @@
 
 .avatar_img {
   color: rgb(255, 255, 255);
-  padding-left: 1vw;
-  padding-top: 1vh;
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 0.2em;
   width: 8vmin;
 }
 
@@ -78,17 +80,17 @@
 
 .dialog_message {
   grid-area: last_message;
-  max-height: 4.5vmin;
-  margin-right: 3vmin;
   overflow: hidden;
 }
 
 .dialog_date {
   grid-area: date;
+  text-align: center;
 }
 
 .dialog_check {
   grid-area: check;
+  text-align: center;
 }
 
 .header_find {

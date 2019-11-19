@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Redirect } from 'react-router-dom';
-// import { withRouter } from 'react-router-dom';
-// import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import styles from '../styles/settings-form.module.css';
 
-function Settings() {
-	const [toHome, setHome] = useState(false);
+function Settings({ history }) {
 	const [fullname, setFullname] = useState('');
 	const [username, setUsername] = useState('@');
 	const [bio, setBio] = useState('');
@@ -54,9 +52,8 @@ function Settings() {
 
 	return (
 		<div className={styles.wrapper}>
-			{toHome ? <Redirect to="/" /> : null}
 			<div className={styles.header}>
-				<div onClick={() => {setHome(true);}} role="button" tabIndex={0} onKeyPress={() => {}} className={styles.exit}>&#8678;</div>
+				<div onClick={() => history.push(`${process.env.PUBLIC_URL}/`)} role="button" tabIndex={0} onKeyPress={() => {}} className={styles.exit}>&#8678;</div>
 				<div className={styles.header_settings}>Settings</div>
 				<div className={styles.header_save} onClick={() => handleSubmit()} role="button" tabIndex={0} onKeyPress={() => {}}>&#10004;</div>
 			</div>
@@ -91,4 +88,10 @@ function Settings() {
 	);
 }
 
-export default Settings;
+Settings.propTypes = {
+	history: PropTypes.shape({
+		push: PropTypes.func.isRequired,
+	}).isRequired,
+};
+
+export default withRouter(Settings);
