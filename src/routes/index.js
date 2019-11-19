@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router, Switch, Route } from 'react-router-dom';
+import { Router, Switch, Route, useParams } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import styled from '@emotion/styled';
 import Dialogs from '../components/Dialogs';
@@ -13,14 +13,27 @@ const Container = styled.div`
 `;
 export const history = createBrowserHistory();
 
+function ChatRouter() {
+	const { name } = useParams();
+	return (
+		<Chat name={name}/>
+	);
+}
+
 function Routes(props) {
 	return (
 		<Router history={history}>
 			<Container>
 				<Switch>
-					<Route exact path="/" component={Dialogs} />
-					<Route path="/settings" component={Settings} />
-					<Route path="/chatWith/:name" component={Chat} />
+					<Route path="/settings">
+						<Settings />
+					</Route>
+					<Route path="/chatWith/:name">
+						<ChatRouter />
+					</Route>
+					<Route path="/">
+						<Dialogs />
+					</Route>
 				</Switch>
 			</Container>
 		</Router>

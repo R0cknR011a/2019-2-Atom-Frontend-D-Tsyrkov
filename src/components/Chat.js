@@ -4,10 +4,9 @@ import PropTypes from 'prop-types';
 import styles from '../styles/message-form.module.css';
 
 
-function Chat({ match }) {
+function Chat({ name }) {
 	const [messages, setMessages] = useState([]);
 	const myRef = useRef(null);
-	const {name} = match.params;
 	
 	const scrollToBottom = () => {
 		myRef.current.scrollIntoView({block: 'end'});
@@ -98,11 +97,7 @@ function Chat({ match }) {
 }
 
 Chat.propTypes = {
-	match: PropTypes.shape({
-		params: PropTypes.shape({
-			name: PropTypes.string.isRequired
-		})
-	}).isRequired,
+	name: PropTypes.string.isRequired,
 };
 
 export default Chat;
