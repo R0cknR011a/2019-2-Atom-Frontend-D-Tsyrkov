@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import { Router, Switch } from 'react-router-dom';
+import React from 'react';
+import { Router, Switch, Route, useParams } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import styled from '@emotion/styled';
 import Dialogs from '../components/Dialogs';
 import Chat from '../components/Chat';
+import Settings from '../components/Settings';
 
 const Container = styled.div`
   background-color: rgb(20, 20, 20);
@@ -12,24 +13,27 @@ const Container = styled.div`
 `;
 export const history = createBrowserHistory();
 
-function Routes(props) {
-	const [component, setComponent] = useState(
-		<Dialogs redirect={(name) => enterChat(name)} />,
+function ChatRouter() {
+	const { name } = useParams();
+	return (
+		<Chat name={name}/>
 	);
+}
 
-	const enterChat = (name) => {
-		setComponent(<Chat redirect={() => exitChat()} name={name} />);
-	};
-
-	const exitChat = () => {
-		setComponent(<Dialogs redirect={(name) => enterChat(name)} />);
-	};
-
+function Routes(props) {
 	return (
 		<Router history={history}>
 			<Container>
 				<Switch>
-					{component}
+					<Route path="/settings">
+						<Settings />
+					</Route>
+					<Route path="/chatWith/:name">
+						<ChatRouter />
+					</Route>
+					<Route path="/">
+						<Dialogs />
+					</Route>
 				</Switch>
 			</Container>
 		</Router>

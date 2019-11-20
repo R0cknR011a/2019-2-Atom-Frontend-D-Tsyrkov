@@ -26,6 +26,7 @@
 .chat_exit_button {
   padding-left: 0.5em;
   cursor: pointer;
+  outline: none;
 }
 
 .message_container {
@@ -48,4 +49,12 @@
   border: none;
   outline: none;
   border-color: rgb(60, 60, 60);
+}
+
+a,
+a:hover,
+a:focus,
+a:active {
+  text-decoration: none;
+  color: rgb(255, 255, 255);
 }
