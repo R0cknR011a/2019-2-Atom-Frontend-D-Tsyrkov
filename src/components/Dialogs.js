@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import styles from '../styles/dialog-form.module.css';
-
 
 function Dialogs({ history }) {
 	const [chats, setChats] = useState([]);
@@ -38,12 +37,9 @@ function Dialogs({ history }) {
 			setChats(list);
 		}}, [history]);
 
-	const addToggle = () => {
-		setAdd(!toggleAdd);
-	};
-
 	function AddInput() {
 		const [value, setValue] = useState('');
+		const inputRef = useRef(null);
 
 		const HandleSubmit = (event) => {
 			event.preventDefault();
@@ -67,12 +63,17 @@ function Dialogs({ history }) {
 			setValue(event.target.value);
 		};
 
+		useEffect(() => {
+			inputRef.current.focus();
+		}, [])
+
 		return (
 			<form onSubmit={(event) => HandleSubmit(event, value.trim())}>
 				<input
 					className={styles.add_input}
 					type="text"
 					onChange={(event) => HandleChange(event)}
+					ref={inputRef}
 				/>
 			</form>
 		);
@@ -86,9 +87,9 @@ function Dialogs({ history }) {
 				<span role="img" aria-label="smth" className={styles.header_find}>&#128270;</span>
 			</div>
 			<div className={styles.chat_list}>{chats}</div>
-			<button className={styles.add_button} onClick={() => addToggle()} type="button">
+			<div className={styles.add_button} onClick={() => setAdd(!toggleAdd)}>
 				&#9998;
-			</button>
+			</div>
 			{toggleAdd ? (
 				<AddInput />
 			) : null}
@@ -99,7 +100,7 @@ function Dialogs({ history }) {
 function DialogContainer({ name, message, date, check, enter }) {
 	return (
 		<div className={styles.dialog_container} onClick={() => enter()} role='button' tabIndex={0} onKeyPress={() => {}}>
-			<div className={styles.dialog_avatar}>
+			<div className={styles.dialog_avatar	}>
 				<img
 					src="https://icon-library.net//images/free-profile-icon/free-profile-icon-4.jpg"
 					className={styles.avatar_img}
@@ -120,12 +121,18 @@ function DialogContainer({ name, message, date, check, enter }) {
 	);
 }
 
+DialogContainer.defaultProps = {
+	message: '',
+	date: '',
+	check: false,
+}
+
 DialogContainer.propTypes = {
 	name: PropTypes.string.isRequired,
 	message: PropTypes.string.isRequired,
-	date: PropTypes.string.isRequired,
-	check: PropTypes.bool.isRequired,
-	enter :PropTypes.func.isRequired,
+	date: PropTypes.string,
+	check: PropTypes.bool,
+	enter: PropTypes.func,
 };
 
 Dialogs.propTypes = {

@@ -2,10 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styles from '../styles/message-form.module.css';
-import image from './paper-clip-6-64.png';
+import clip from './paper-clip-6-64.png';
 import play from './play-icon-white-png-8.jpg';
 import stop from './Stop-circle-01.svg';
-import getMedia from '../actions/recorder';
 
 function Chat({ match, history }) {
 	const [messages, setMessages] = useState([]);
@@ -35,25 +34,24 @@ function Chat({ match, history }) {
 	function MessageInput() {
 		const [currentMessage, setCurrentMessage] = useState('');
 		const [attach, setAttach] = useState(false);
-		const [preview, setPreview] = useState(false);
 		const [attachments, setAttachments] = useState([]);
 		const [recording, setRecording] = useState(null);
+		const [recorder, setRecorder] = useState(null);
+		const [chunks, setChunks] = useState([]);
+		const [sendButton, setSendButton] = useState(null);
+		const [files, setFiles] = useState(null);
+
 		const CurrMessageInput = useRef(null);
 		const FileInputRef = useRef(null);
-
-		const focusInput = () => {
-			FileInputRef.current.click();
-		};
 
 		const previewFiles = (files) => {
 			if (files.length > 10) {
 				alert('There is a file limit of 10 maximum');
 			} else {
-				setPreview(true);
-				const fileList = [];
+				const fileListToAttachment = [];
 				for (let i = 0; i < files.length; i+=1) {
 					const fileURL = window.URL.createObjectURL(files[i]);
-					fileList.push(
+					fileListToAttachment.push(
 						<div key={i} className={styles.attach_container}>
 							<img
 								src={fileURL}
@@ -65,58 +63,93 @@ function Chat({ match, history }) {
 						</div>
 					);
 				};
-				setAttachments(fileList);
+				setAttachments(fileListToAttachment);
+				setSendButton(
+					<button
+						className={styles.send_button}
+						type="button"
+						onClick={(event) => {
+							sendMessage(event, currentMessage, files);
+							setSendButton(false);
+						}}
+					>
+						<img src={play} className={styles.send_button_img} alt="img"/>
+					</button>
+				);
 			}
 		};
 
-		// async function getMedia() {
-		// 	let stream = null;
-		// 	let audioURL = null;
-		// 	try {
-		// 		stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+		async function fetchData() {
+			try {
+				const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+				const mediaRecorder = new MediaRecorder(stream);
+				return mediaRecorder;
+			} catch(err) {
+				console.log(err);
+				return -1;
+			}
+		}
 
-		// 		const mediaRecorder = new MediaRecorder(stream);
-		// 		let chunks = [];
-		// 		// mediaRecorder.addEventListener('stop', (event) => {
-		// 		// 	const blob = new Blob(chunks, { type: mediaRecorder.mimeType });
-		// 		// 	chunks = [];
-		// 		// 	audioURL = URL.createObjectURL(blob);
-		// 		// });
-		// 		mediaRecorder.ondataavailable = (event) => {
-		// 			chunks.push(event.data);
-		// 		};
-		// 		console.log(mediaRecorder);
-		// 		mediaRecorder.start();
-		// 		wait(5000);
-		// 		mediaRecorder.stop();
-		// 		const blob = new Blob(chunks, { type: mediaRecorder.mimeType });
-		// 		audioURL = window.URL.createObjectURL(blob);
-		// 		setRecording(<audio controls src={audioURL} />);
-		// 	} catch(err) {
-		// 		console.log(err);
-		// 	}
-		// }
+		const startRecord = (record) => {
+			const recordHere = record;
+			recordHere.start(10);
+			recordHere.ondataavailable = (event) => {
+				chunks.push(event.data);
+			};
+			setRecorder(recordHere);
+			setRecording(true);
+		};
+
+		const stopRecord = () => {
+			recorder.stop();
+			const blob = new Blob(chunks, { type: recorder.mimeType });
+			const data = new FormData();
+			data.append("audio", blob);
+			fetch("https://tt-front.now.sh/upload", {
+				method: "POST",
+				body: data,
+			}).then(res => {
+				if (res.ok) {
+					const audioURL = window.URL.createObjectURL(blob);
+					setMessages([
+						...messages,
+						<audio controls src={audioURL} className={styles.audio_output} key={messages.length}/>
+					]);
+				}
+			}).catch(err => {
+				setMessages([
+					...messages,
+				<div className={styles.message_container} key={messages.length}>{err.message}</div>
+				]);
+			});
+			setRecording(false);
+			setChunks([]);
+		}
+
+		const recordHandler = (event) => {
+			event.preventDefault();
+			if (recording === null) {
+				fetchData().then((mediaRecorder) => startRecord(mediaRecorder));
+			} else if (recording) {
+				stopRecord();
+			} else {
+				startRecord(recorder);
+			}
+		};
 
 		const attachMenu =
 		<div className={styles.attach_menu}>
 			<div className={styles.location} onClick={() => sendLocation()} role='button' tabIndex={0} onKeyPress={() => {}}>Location</div>
-			<div className={styles.media} onClick={() => focusInput()} role='button' tabIndex={0} onKeyPress={() => {}}>Image</div>
-			<input type="file" multiple accept="image/*" style={{'display': 'none'}} onChange={(event) => previewFiles(event.target.files)} ref={FileInputRef} />
-			<div className={styles.audio} onClick={() => {
-				(async () => {
-					const audioURL = await getMedia();
-					setRecording(<audio controls src={audioURL} />);
-				})();
-			}} role='button' tabIndex={0} onKeyPress={() => {}}>
+			<div className={styles.media} onClick={() => FileInputRef.current.click()} role='button' tabIndex={0} onKeyPress={() => {}}>Image</div>
+			<input type="file" multiple accept="image/*" style={{'display': 'none'}} onChange={(event) => {
+				setFiles(event.target.files);
+				previewFiles(event.target.files);
+				}} ref={FileInputRef} />
+			<div className={styles.audio} onClick={(event) => recordHandler(event)} role='button' tabIndex={0} onKeyPress={() => {}}>
 				Audio
-				{/* {recording ? <img src={stop} style={{'height': '1em'}} /> : <img src={play} style={{'height': '1em'}} />} */}
+				{recording ? <img src={stop} alt='stop' className={styles.play_stop}/> : <img src={play} alt='play' className={styles.play_stop}/>}
 			</div>
-		</div>;
-
-		const attachmentList =
-		<div className={styles.attachments_list}>
-			{attachments}
-		</div>;
+		</div>;		
 
 		const sendLocation = () => {
 			if ('geolocation' in navigator) {
@@ -138,15 +171,11 @@ function Chat({ match, history }) {
 			setCurrentMessage(event.target.value);
 		};
 
-		const inputFocus = () => {
-			CurrMessageInput.current.focus();
-		}; 
-
-		const sendMessage = (event, value) => {
+		const sendMessage = (event, value, files) => {
 			event.preventDefault();
-			if (value !== '') {
+			if (files !== null || value !== '') {
+				let time = '';
 				const date = new Date();
-				const data = JSON.parse(localStorage.getItem(name));
 				let minutes = date.getMinutes().toString();
 				if (minutes.length === 1) {
 					minutes = `0${minutes}`;
@@ -155,23 +184,72 @@ function Chat({ match, history }) {
 				if (hours.length === 1) {
 					hours = `0${hours}`;
 				}
-				setMessages([
-					...messages,
-					<div className={styles.message_container} key={data.length}>
-						<div>{value}</div>
-						<div>{`${hours}:${minutes}`}</div>
-					</div>,
-				]);
-
-				data.push([value, `${hours}:${minutes}`]);
-				localStorage.setItem(name, JSON.stringify(data));
+				time = `${hours}:${minutes}`;
+				if (value !== '') {
+					const data = JSON.parse(localStorage.getItem(name));
+					data.push([value, time]);
+					localStorage.setItem(name, JSON.stringify(data));
+				}
+				if (files !== null) {
+					const fileListToAttachment = [];
+					const data = new FormData();
+					for (let i = 0; i < files.length; i+=1) {
+						data.append("image", files[i]);
+						const fileURL = window.URL.createObjectURL(files[i]);
+						fileListToAttachment.push(
+								<img
+									src={fileURL}
+									alt="img"
+									className={styles.message_attach_img}
+									key={fileListToAttachment.length}
+									onLoad={() => {
+										window.URL.revokeObjectURL(fileURL);
+									}}
+								/>
+						);
+					};
+					fetch("https://tt-front.now.sh/upload", {
+						method: "POST",
+						body: data,
+					}).then(res => {
+						if (res.ok) {
+							setMessages([
+								...messages,
+								<div className={styles.message_container} key={messages.length}>
+									<div>{value}</div>
+									<div className={styles.message_attachments}>{fileListToAttachment}</div>
+									<div>{time}</div>
+								</div>,
+							]);
+						}
+					}).catch(err => {
+						setMessages([
+							...messages,
+							<div className={styles.message_container} key={messages.length}>
+								<div>{value}</div>
+								<div>{err.message}</div>
+								<div>{time}</div>
+							</div>,
+						]);
+					});
+				} else {
+					setMessages([
+						...messages,
+						<div className={styles.message_container} key={messages.length}>
+							<div>{value}</div>
+							<div>{time}</div>
+						</div>,
+					]);
+				}				
 			}
 		};
 
-		useEffect(inputFocus, [CurrMessageInput]);
+		useEffect(() => {
+			CurrMessageInput.current.focus();
+		}, []);
 
 		return (
-			<form onSubmit={(event) => sendMessage(event, currentMessage.trim())}>
+			<form onSubmit={(event) => sendMessage(event, currentMessage.trim(), files)}>
 				{attach ? attachMenu : null}
 				<div
 					className={styles.input_form}
@@ -179,11 +257,12 @@ function Chat({ match, history }) {
 					onDragOver={(event) => event.preventDefault()}
 					onDrop={(event) => {
 						event.preventDefault();
+						setFiles(event.dataTransfer.files)
 						previewFiles(event.dataTransfer.files);
 					}}
 				>
 					<img
-						src={image}
+						src={clip}
 						className={styles.attach_icon}
 						onClick={() => setAttach(!attach)}
 						alt="img"
@@ -194,9 +273,9 @@ function Chat({ match, history }) {
 						className={styles.message_input}
 						ref={CurrMessageInput}
 					/>
+					{sendButton}
 				</div>
-				{preview ? attachmentList : null}
-				{ recording }
+				<div className={styles.attachments_list}>{attachments}</div>
 			</form>
 		);
 	}

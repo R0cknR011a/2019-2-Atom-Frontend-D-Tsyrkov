@@ -16,7 +16,7 @@
   margin-top: 7vmin;
   display: flex;
   flex-direction: column-reverse;
-  width: 100vw;
+  width: 100%;
   color: rgb(255, 255, 255);
 }
 
@@ -26,7 +26,7 @@
   top: 85vh;
   left: 85vw;
   padding: 1vmin;
-  border-radius: 0.2em;
+  border-radius: 0.1em;
   outline: none;
   background-color: rgb(50, 50, 50);
   border-color: rgb(70, 70, 70);
@@ -61,12 +61,12 @@
   cursor: pointer;
   border-bottom: 0.5vh solid rgb(50, 50, 50);
   display: grid;
-  grid-template-columns: 10vw 80vw 10vw;
+  grid-template-columns: 10% 80% 10%;
   grid-template-rows: 5vmin 5vmin;
+  font-size: 3vmin;
   grid-template-areas:
     'avatar name date'
     'avatar last_message check';
-  font-size: 3vmin;
   outline: none;
 }
 
@@ -81,6 +81,7 @@
 .dialog_message {
   grid-area: last_message;
   overflow: hidden;
+  max-height: 5vmin;
 }
 
 .dialog_date {
