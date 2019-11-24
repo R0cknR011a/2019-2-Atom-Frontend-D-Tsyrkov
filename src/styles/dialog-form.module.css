@@ -100,9 +100,6 @@
 
 .header_menu {
   cursor: pointer;
-}
-
-.header_menu {
   color: rgb(255, 255, 255);
   padding-left: 1%;
   font-size: 3vmin;
