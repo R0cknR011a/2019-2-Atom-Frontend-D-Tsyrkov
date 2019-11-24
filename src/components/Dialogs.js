@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styles from '../styles/dialog-form.module.css';
 
 function Dialogs({ history }) {
@@ -29,7 +29,6 @@ function Dialogs({ history }) {
 						message={message}
 						check={check}
 						key={list.length}
-						enter={() => history.push(`/chatWith/${element}`)}
 					/>,
 				);
 				return 0;
@@ -50,7 +49,6 @@ function Dialogs({ history }) {
 					<DialogContainer
 						name={value}
 						key={data.length}
-						enter={() => history.push(`/chatWith/${value}`)}
 					/>,
 				]);
 				data.push(value);
@@ -86,6 +84,7 @@ function Dialogs({ history }) {
 				<div className={styles.header_text}>Messenger</div>
 				<span role="img" aria-label="smth" className={styles.header_find}>&#128270;</span>
 			</div>
+			{menu ? menuItem : null}
 			<div className={styles.chat_list}>{chats}</div>
 			<div className={styles.add_button} onClick={() => setAdd(!toggleAdd)}>
 				&#9998;
@@ -97,7 +96,7 @@ function Dialogs({ history }) {
 	);
 }
 
-function DialogContainer({ name, message, date, check, enter }) {
+function DialogContainer({ name, message, date, check }) {
 	return (
 		<div className={styles.dialog_container} onClick={() => enter()} role='button' tabIndex={0} onKeyPress={() => {}}>
 			<div className={styles.dialog_avatar	}>
@@ -117,7 +116,7 @@ function DialogContainer({ name, message, date, check, enter }) {
 					<div className={styles.dialog_check}>&#10004;</div>
 				) : null}
 			</div>
-		</div>
+		</Link>
 	);
 }
 
@@ -141,4 +140,4 @@ Dialogs.propTypes = {
 	}).isRequired,
 };
 
-export default withRouter(Dialogs);
+export default Dialogs;

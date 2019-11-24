@@ -101,3 +101,21 @@
 .header_menu {
   cursor: pointer;
 }
+
+.header_menu {
+  color: rgb(255, 255, 255);
+  padding-left: 1%;
+  font-size: 3vmin;
+  position: fixed;
+  top: 7vmin;
+  width: 30%;
+  background-color: rgb(70, 70, 70);
+}
+
+a,
+a:hover,
+a:focus,
+a:active {
+  text-decoration: none;
+  color: rgb(255, 255, 255);
+}

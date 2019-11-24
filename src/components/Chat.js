@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styles from '../styles/message-form.module.css';
 import clip from './paper-clip-6-64.png';
 import play from './play-icon-white-png-8.jpg';
 import stop from './Stop-circle-01.svg';
 
-function Chat({ match, history }) {
+function Chat({ name }) {
 	const [messages, setMessages] = useState([]);
 	const inputRef = useRef(null);
 	const {name} = match.params;
@@ -299,14 +299,7 @@ function Chat({ match, history }) {
 }
 
 Chat.propTypes = {
-	match: PropTypes.shape({
-		params: PropTypes.shape({
-			name: PropTypes.string.isRequired
-		})
-	}).isRequired,
-	history: PropTypes.shape({
-		push: PropTypes.func.isRequired,
-	}).isRequired,
+	name: PropTypes.string.isRequired,
 };
 
-export default withRouter(Chat);
+export default Chat;
