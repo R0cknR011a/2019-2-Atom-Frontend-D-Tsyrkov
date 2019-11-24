@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import styles from '../styles/dialog-form.module.css';
 
-function Dialogs({ history }) {
+function Dialogs() {
 	const [chats, setChats] = useState([]);
 	const [toggleAdd, setAdd] = useState(false);
 	const [menu, setMenu] = useState(false);
@@ -42,7 +42,7 @@ function Dialogs({ history }) {
 				return 0;
 			});
 			setChats(list);
-		}}, [history]);
+		}}, []);
 
 	function AddInput() {
 		const [value, setValue] = useState('');
@@ -71,7 +71,7 @@ function Dialogs({ history }) {
 
 		useEffect(() => {
 			inputRef.current.focus();
-		}, [])
+		}, []);
 
 		return (
 			<form onSubmit={(event) => HandleSubmit(event, value.trim())}>
@@ -94,7 +94,7 @@ function Dialogs({ history }) {
 			</div>
 			{menu ? menuItem : null}
 			<div className={styles.chat_list}>{chats}</div>
-			<div className={styles.add_button} onClick={() => setAdd(!toggleAdd)}>
+			<div className={styles.add_button} onClick={() => setAdd(!toggleAdd)} role="button" tabIndex={0} onKeyPress={() => {}}>
 				&#9998;
 			</div>
 			{toggleAdd ? (
@@ -106,9 +106,9 @@ function Dialogs({ history }) {
 
 function DialogContainer({ name, message, date, check }) {
 	return (
-		<Link to={`/chatWith/${name}`}>			
+		<Link to={`/chatWith/${name}`}>
 			<div className={styles.dialog_container}>
-				<div className={styles.dialog_avatar	}>
+				<div className={styles.dialog_avatar}>
 					<img
 						src="https://icon-library.net//images/free-profile-icon/free-profile-icon-4.jpg"
 						className={styles.avatar_img}
@@ -131,10 +131,9 @@ function DialogContainer({ name, message, date, check }) {
 }
 
 DialogContainer.defaultProps = {
-	message: '',
 	date: '',
 	check: false,
-}
+};
 
 DialogContainer.propTypes = {
 	name: PropTypes.string.isRequired,
