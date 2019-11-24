@@ -6,6 +6,14 @@ import styles from '../styles/dialog-form.module.css';
 function Dialogs({ history }) {
 	const [chats, setChats] = useState([]);
 	const [toggleAdd, setAdd] = useState(false);
+	const [menu, setMenu] = useState(false);
+
+	const menuItem =
+	<Link to="/settings">
+		<div className={styles.header_menu}>
+				Settings
+		</div>
+	</Link>;
 
 	useEffect(() => {
 		const data = localStorage.getItem('users');
@@ -80,7 +88,7 @@ function Dialogs({ history }) {
 	return (
 		<div className={styles.dialog_form}>
 			<div className={styles.dialog_header}>
-				<div className={styles.header_menu}>&#9776;</div>
+				<div onClick={() => setMenu(!menu)} role="button" tabIndex={0} onKeyPress={() => {}}>&#9776;</div>
 				<div className={styles.header_text}>Messenger</div>
 				<span role="img" aria-label="smth" className={styles.header_find}>&#128270;</span>
 			</div>
@@ -98,23 +106,25 @@ function Dialogs({ history }) {
 
 function DialogContainer({ name, message, date, check }) {
 	return (
-		<div className={styles.dialog_container} onClick={() => enter()} role='button' tabIndex={0} onKeyPress={() => {}}>
-			<div className={styles.dialog_avatar	}>
-				<img
-					src="https://icon-library.net//images/free-profile-icon/free-profile-icon-4.jpg"
-					className={styles.avatar_img}
-					alt=''
-				/>
-			</div>
-			<div>
-				<div className={styles.dialog_name}>{name}</div>
-				<div className={styles.dialog_message}>{message}</div>
-			</div>
-			<div>
-				<div className={styles.dialog_date}>{date}</div>
-				{check ? (
-					<div className={styles.dialog_check}>&#10004;</div>
-				) : null}
+		<Link to={`/chatWith/${name}`}>			
+			<div className={styles.dialog_container}>
+				<div className={styles.dialog_avatar	}>
+					<img
+						src="https://icon-library.net//images/free-profile-icon/free-profile-icon-4.jpg"
+						className={styles.avatar_img}
+						alt=''
+					/>
+				</div>
+				<div>
+					<div className={styles.dialog_name}>{name}</div>
+					<div className={styles.dialog_message}>{message}</div>
+				</div>
+				<div>
+					<div className={styles.dialog_date}>{date}</div>
+					{check ? (
+						<div className={styles.dialog_check}>&#10004;</div>
+					) : null}
+				</div>
 			</div>
 		</Link>
 	);
@@ -131,13 +141,6 @@ DialogContainer.propTypes = {
 	message: PropTypes.string.isRequired,
 	date: PropTypes.string,
 	check: PropTypes.bool,
-	enter: PropTypes.func,
-};
-
-Dialogs.propTypes = {
-	history: PropTypes.shape({
-		push: PropTypes.func.isRequired,
-	}).isRequired,
 };
 
 export default Dialogs;

@@ -9,7 +9,6 @@ import stop from './Stop-circle-01.svg';
 function Chat({ name }) {
 	const [messages, setMessages] = useState([]);
 	const inputRef = useRef(null);
-	const {name} = match.params;
 	
 	const scrollToBottom = () => {
 		inputRef.current.scrollIntoView({block: 'end'});
@@ -283,13 +282,11 @@ function Chat({ name }) {
 	return (
 		<div className={styles.wrapper}>
 			<div className={styles.chat_header}>
-				<div role="button" tabIndex={0}
-					className={styles.chat_exit_button}
-					onKeyPress={() => {}}
-					onClick={() => history.push(`${process.env.PUBLIC_URL}/`)}
-				>
-					&#8678;
-				</div>
+				<Link to="/">
+					<div className={styles.chat_exit_button}>
+						&#8678;
+					</div>
+				</Link>
 				<div className={styles.chat_name}>{name}</div>
 			</div>
 			<div className={styles.messages_list} ref={inputRef}>{messages}</div>
