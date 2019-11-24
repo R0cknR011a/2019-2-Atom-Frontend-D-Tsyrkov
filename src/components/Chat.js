@@ -43,13 +43,13 @@ function Chat({ name }) {
 		const CurrMessageInput = useRef(null);
 		const FileInputRef = useRef(null);
 
-		const previewFiles = (files) => {
-			if (files.length > 10) {
+		const previewFiles = (inputFiles) => {
+			if (inputFiles.length > 10) {
 				alert('There is a file limit of 10 maximum');
 			} else {
 				const fileListToAttachment = [];
-				for (let i = 0; i < files.length; i+=1) {
-					const fileURL = window.URL.createObjectURL(files[i]);
+				for (let i = 0; i < inputFiles.length; i+=1) {
+					const fileURL = window.URL.createObjectURL(inputFiles[i]);
 					fileListToAttachment.push(
 						<div key={i} className={styles.attach_container}>
 							<img
@@ -68,7 +68,7 @@ function Chat({ name }) {
 						className={styles.send_button}
 						type="button"
 						onClick={(event) => {
-							sendMessage(event, currentMessage, files);
+							sendMessage(event, currentMessage, inputFiles);
 							setSendButton(false);
 						}}
 					>
@@ -103,27 +103,28 @@ function Chat({ name }) {
 			recorder.stop();
 			const blob = new Blob(chunks, { type: recorder.mimeType });
 			const data = new FormData();
-			data.append("audio", blob);
-			fetch("https://tt-front.now.sh/upload", {
-				method: "POST",
+			data.append('audio', blob);
+			fetch('https://tt-front.now.sh/upload', {
+				method: 'POST',
 				body: data,
 			}).then(res => {
 				if (res.ok) {
 					const audioURL = window.URL.createObjectURL(blob);
 					setMessages([
 						...messages,
+						// eslint-disable-next-line jsx-a11y/media-has-caption
 						<audio controls src={audioURL} className={styles.audio_output} key={messages.length}/>
 					]);
 				}
 			}).catch(err => {
 				setMessages([
 					...messages,
-				<div className={styles.message_container} key={messages.length}>{err.message}</div>
+					<div className={styles.message_container} key={messages.length}>{err.message}</div>
 				]);
 			});
 			setRecording(false);
 			setChunks([]);
-		}
+		};
 
 		const recordHandler = (event) => {
 			event.preventDefault();
@@ -140,15 +141,15 @@ function Chat({ name }) {
 		<div className={styles.attach_menu}>
 			<div className={styles.location} onClick={() => sendLocation()} role='button' tabIndex={0} onKeyPress={() => {}}>Location</div>
 			<div className={styles.media} onClick={() => FileInputRef.current.click()} role='button' tabIndex={0} onKeyPress={() => {}}>Image</div>
-			<input type="file" multiple accept="image/*" style={{'display': 'none'}} onChange={(event) => {
+			<input type="file" multiple accept="image/*" className={styles.attach_meni_idk} onChange={(event) => {
 				setFiles(event.target.files);
 				previewFiles(event.target.files);
-				}} ref={FileInputRef} />
+			}} ref={FileInputRef} />
 			<div className={styles.audio} onClick={(event) => recordHandler(event)} role='button' tabIndex={0} onKeyPress={() => {}}>
 				Audio
 				{recording ? <img src={stop} alt='stop' className={styles.play_stop}/> : <img src={play} alt='play' className={styles.play_stop}/>}
 			</div>
-		</div>;		
+		</div>;
 
 		const sendLocation = () => {
 			if ('geolocation' in navigator) {
@@ -170,9 +171,9 @@ function Chat({ name }) {
 			setCurrentMessage(event.target.value);
 		};
 
-		const sendMessage = (event, value, files) => {
+		const sendMessage = (event, value, inputFiles) => {
 			event.preventDefault();
-			if (files !== null || value !== '') {
+			if (inputFiles !== null || value !== '') {
 				let time = '';
 				const date = new Date();
 				let minutes = date.getMinutes().toString();
@@ -189,26 +190,26 @@ function Chat({ name }) {
 					data.push([value, time]);
 					localStorage.setItem(name, JSON.stringify(data));
 				}
-				if (files !== null) {
+				if (inputFiles !== null) {
 					const fileListToAttachment = [];
 					const data = new FormData();
-					for (let i = 0; i < files.length; i+=1) {
-						data.append("image", files[i]);
-						const fileURL = window.URL.createObjectURL(files[i]);
+					for (let i = 0; i < inputFiles.length; i+=1) {
+						data.append('image', inputFiles[i]);
+						const fileURL = window.URL.createObjectURL(inputFiles[i]);
 						fileListToAttachment.push(
-								<img
-									src={fileURL}
-									alt="img"
-									className={styles.message_attach_img}
-									key={fileListToAttachment.length}
-									onLoad={() => {
-										window.URL.revokeObjectURL(fileURL);
-									}}
-								/>
+							<img
+								src={fileURL}
+								alt="img"
+								className={styles.message_attach_img}
+								key={fileListToAttachment.length}
+								onLoad={() => {
+									window.URL.revokeObjectURL(fileURL);
+								}}
+							/>
 						);
 					};
-					fetch("https://tt-front.now.sh/upload", {
-						method: "POST",
+					fetch('https://tt-front.now.sh/upload', {
+						method: 'POST',
 						body: data,
 					}).then(res => {
 						if (res.ok) {
@@ -239,7 +240,7 @@ function Chat({ name }) {
 							<div>{time}</div>
 						</div>,
 					]);
-				}				
+				}
 			}
 		};
 
@@ -256,16 +257,17 @@ function Chat({ name }) {
 					onDragOver={(event) => event.preventDefault()}
 					onDrop={(event) => {
 						event.preventDefault();
-						setFiles(event.dataTransfer.files)
+						setFiles(event.dataTransfer.files);
 						previewFiles(event.dataTransfer.files);
 					}}
 				>
-					<img
-						src={clip}
-						className={styles.attach_icon}
-						onClick={() => setAttach(!attach)}
-						alt="img"
-					/>
+					<div onClick={() => setAttach(!attach)} onKeyPress={() => {}} role='button' tabIndex={0} className={styles.clip_wrapper}>
+						<img
+							src={clip}
+							className={styles.attach_icon}
+							alt="img"
+						/>
+					</div>
 					<input
 						type="text"
 						onChange={(event) => handleChange(event)}
