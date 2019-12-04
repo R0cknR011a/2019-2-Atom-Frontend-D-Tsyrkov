@@ -1,35 +1,56 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import styles from '../styles/settings-form.module.css';
+import styles from '../styles/settings.module.css';
+import url from '../constants/backend';
 
-function Settings({ history }) {
-	const [fullname, setFullname] = useState('');
-	const [username, setUsername] = useState('@');
-	const [bio, setBio] = useState('');
+function Settings({ history, username, logout }) {
+	const [name, setName] = useState(null);
+	const [avatar, setAvatar] = useState(null);
+	const [bio, setBio] = useState(null);
+
+	const FileInputRef = useRef(null);
 
 	useEffect(() => {
-		let data = localStorage.getItem('settings');
-		if (data === null) {
-			localStorage.setItem('settings', JSON.stringify({
-				'fullname': '',
-				'username': '@',
-				'bio': ''
-			}));
-		} else {
-			data = JSON.parse(data);
-			setFullname(data.fullname);
-			setUsername(data.username);
-			setBio(data.bio);
-		}
+		fetch(`${url}/users/get_settings/?username=${username}`, {
+			headers: {
+				'Authorization': `JWT ${localStorage.getItem('token')}`
+			},
+		}).then(res => {
+			if (res.ok) {
+				res.json().then(json => {
+					setAvatar(json.result.avatar);
+					setBio(json.result.bio);
+					setName(json.result.fullname);
+				})
+			} else if (res.status === 401) {
+				logout();
+			}
+		})
 	}, []);
 
-	const handleFullname = (event) => {
-		setFullname(event.target.value);
-	};
+	const loadAvatar = (file) => {
+		const data = new FormData();
+		data.append('username', username);
+		data.append('avatar', file[0]);
+		fetch(`${url}/users/set_avatar/`, {
+			method: 'POST',
+			headers: {
+				'Authorization': `JWT ${localStorage.getItem('token')}`
+			},
+			body: data,
+		}).then(res => {
+			if (res.ok) {
+				const fileURL = window.URL.createObjectURL(file[0]);
+				setAvatar(fileURL);
+			} else if (res.status === 401) {
+				logout();
+			}
+		})
+	}
 
 	const handleUsername = (event) => {
-		setUsername(event.target.value);
+		setName(event.target.value);
 	};
 
 	const handleBio = (event) => {
@@ -37,17 +58,25 @@ function Settings({ history }) {
 	};
 
 	const handleSubmit = () => {
-		let user = username;
-		if (username.charAt(0) !== '@') {
-			user = `@${  username}`;
-		}
-		const data = {
-			'fullname': fullname,
-			'username': user,
-			'bio': bio
-		};
-		localStorage.setItem('settings', JSON.stringify(data));
-		setUsername(user);
+		if (name.split(' ').length !== 2) {
+			alert('Please enter your first name and last name')
+		} else {
+			const data = new FormData();
+			data.append('fullname', name);
+			data.append('bio', bio);
+			data.append('username', username);
+			fetch(`${url}/users/set_settings/`, {
+				method: 'POST',
+				headers: {
+					'Authorization': `JWT ${localStorage.getItem('token')}`,
+				},
+				body: data,
+			}).then(res => {
+				if (res.status === 401) {
+					logout();
+				}
+			})
+		}		
 	};
 
 	return (
@@ -58,25 +87,21 @@ function Settings({ history }) {
 				<div className={styles.header_save} onClick={() => handleSubmit()} role="button" tabIndex={0} onKeyPress={() => {}}>&#10004;</div>
 			</div>
 			<form className={styles.main_form}>
-				<div className={styles.main_avatar}>
+				<div className={styles.main_avatar} onClick={() => FileInputRef.current.click()}>
+					<input type='file' accept='image/*' style={{'display': 'none'}}
+						ref={FileInputRef} onChange={(event) => loadAvatar(event.target.files)}/>
 					<img
-						src="https://icon-library.net//images/free-profile-icon/free-profile-icon-4.jpg"
+						src={avatar}
 						className={styles.avatar_img}
 						alt=''
 					/>
 				</div>
-				<div className={styles.form_fullname}>
+				<div className={styles.form_username}>
 					Full Name
 					<br />
-					<input type="text" className={styles.fullname_input} onChange={(event) => handleFullname(event)} value={fullname}/>
+					<input type="text" className={styles.username_input} onChange={(event) => handleUsername(event)} value={name}/>
 				</div>
-				This affects only your profile name
-				<div className={styles.form_username}>
-					User Name
-					<br />
-					<input type="text" className={styles.username_input} onChange={(event) => handleUsername(event)} value={username}/>
-				</div>
-				Enter your chat name (4 characters at least)
+				Enter your full name
 				<div className={styles.form_bio}>
 					Bio
 					<br />
