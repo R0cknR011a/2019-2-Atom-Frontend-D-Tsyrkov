@@ -8,6 +8,7 @@ import stop from './Stop-circle-01.svg';
 
 function Chat({ name }) {
 	const [messages, setMessages] = useState([]);
+
 	const inputRef = useRef(null);
 	
 	const scrollToBottom = () => {
@@ -47,10 +48,10 @@ function Chat({ name }) {
 			if (inputFiles.length > 10) {
 				alert('There is a file limit of 10 maximum');
 			} else {
-				const fileListToAttachment = [];
+				const list = [];
 				for (let i = 0; i < inputFiles.length; i+=1) {
 					const fileURL = window.URL.createObjectURL(inputFiles[i]);
-					fileListToAttachment.push(
+					list.push(
 						<div key={i} className={styles.attach_container}>
 							<img
 								src={fileURL}
@@ -58,11 +59,11 @@ function Chat({ name }) {
 								className={styles.attach_img}
 								onLoad={() => {
 									window.URL.revokeObjectURL(fileURL);
-								}} />
+							}} />
 						</div>
 					);
 				};
-				setAttachments(fileListToAttachment);
+				setAttachments(list);
 				setSendButton(
 					<button
 						className={styles.send_button}
@@ -147,7 +148,12 @@ function Chat({ name }) {
 			}} ref={FileInputRef} />
 			<div className={styles.audio} onClick={(event) => recordHandler(event)} role='button' tabIndex={0} onKeyPress={() => {}}>
 				Audio
-				{recording ? <img src={stop} alt='stop' className={styles.play_stop}/> : <img src={play} alt='play' className={styles.play_stop}/>}
+				{recording ?
+					<img src={stop} alt='stop'
+						className={styles.play_stop}/>
+						:
+					<img src={play} alt='play'
+						className={styles.play_stop}/>}
 			</div>
 		</div>;
 
