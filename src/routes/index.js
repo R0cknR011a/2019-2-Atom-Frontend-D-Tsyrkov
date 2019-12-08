@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 import Dialogs from '../components/Dialogs';
 import Chat from '../components/Chat';
 import Settings from '../components/Settings';
+import GroupChat from '../components/GroupChat';
 
 const Container = styled.div`
   background-color: rgb(20, 20, 20);
@@ -33,6 +34,9 @@ function Routes(props) {
 					</Route>
 					<Route path="/">
 						<Dialogs />
+					</Route>
+					<Route path="/group_chat">
+						<GroupChat />
 					</Route>
 				</Switch>
 			</Container>
