@@ -5,6 +5,7 @@ import Chat from '../components/Chat';
 import Auth from '../components/Auth';
 import Login from '../components/Login';
 import Settings from '../components/Settings';
+import GroupChat from "../components/GroupChat";
 import url from '../constants/backend';
 
 
@@ -122,6 +123,7 @@ function Routes() {
 				<Switch>
 					<Route path="/settings" render={(props) => <Settings {...props} username={username} logout={handleLogout} /> } />
 					<Route path="/chatWith/:name" render={(props) => <Chat {...props} username={username} logout={handleLogout} /> } />
+					<Route path="/group_chat" render={(props) => <GroupChat {...props} username={username} logout={handleLogout} /> } />
 					<Route render={(props) => <Dialogs {...props} username={username} logout={handleLogout} />} />
 				</Switch>
 			) : (

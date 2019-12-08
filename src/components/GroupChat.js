@@ -7,7 +7,8 @@ import play from './play-icon-white-png-8.jpg';
 import stop from './Stop-circle-01.svg';
 import url from '../constants/backend';
 
-function Chat({ match, history, username, logout }) {
+
+function GroupChat({ match, history, username, logout }) {
 	const { name } = match.params;
 
 	const [messages, setMessages] = useState([]);
@@ -234,7 +235,6 @@ function Chat({ match, history, username, logout }) {
 			let attach_type = 'none';
 			const data = new FormData();
 			data.append('username', username);
-			data.append('opponent', name);
 			data.append('date', getTime());
 			data.append('content', value);
 			if (inputFiles !== null) {
@@ -263,19 +263,22 @@ function Chat({ match, history, username, logout }) {
 				body: data,
 			}).then((res) => {
 				if (res.ok) {
-					setMessages([
-						...messages,
-						<div style={container.not_read} key={messages.length}>
-							<div
-								className={styles.message_container}
-								style={container.mine}>
-								<div>{value}</div>
-								<div className={styles.message_attachments}>{list}</div>
-								<div className={styles.message_time}
-								style={container.mine}>{getTime().split(' ')[1]}</div>
-							</div>
-						</div>,
-					]);
+					res.json().then((json) => {
+						setMessages([
+							...messages,
+							<div style={container.read} key={messages.length}>
+								<div
+									className={styles.message_container}
+									style={container.mine}>
+									<div className={styles.message_avatar}
+										style={container.mine}><img className={styles.avatar} src={json.avatar} />{username}</div>
+									<div>{value}</div>
+									<div className={styles.message_time}
+									style={container.mine}>{getTime().split(' ')[1]}</div>
+								</div>
+							</div>,
+						]);
+					});
 					setAttachments([]);
 					setClip(false);
 					setCurrentMessage('');
@@ -287,6 +290,7 @@ function Chat({ match, history, username, logout }) {
 			})
 		}
 	}
+
 
 	// const findKey = (elem) => {
 	// 	let i = 0;
@@ -351,79 +355,78 @@ function Chat({ match, history, username, logout }) {
 		}).then((res) => {
 			if (res.ok) {
 				res.json().then((json) => {
-					console.log(json);
-		//			let list = [];
-		//			json.messages.map((element) => {
-		//				if (element.attachments.type === 'images') {
-		//					let attachs = [];
-		//					element.attachments.url.map((url) => {
-		//						attachs.push(<img
-		//								src={url}
-		//								key={attachs.length}
-		//									className={styles.message_attach_img}
-		//									alt=""/>);
-		//						return 0;
-		//					});
-		//					list.push(
-		//						<div className={styles.message_wrapper}
-		//							key={list.length}
-		//							style={element.read ? container.read : container.not_read}>
-		//							<div
-		//								className={styles.message_container}
-		//								style={username === element.author ? container.mine : container.not_mine}>
-		//								<div className={styles.message_avatar}
-		//									style={username === element.author ? container.mine : container.not_mine}><img className={styles.avatar} src={element.avatar} />{element.author}</div>
-		//							<div>{element.message}</div>
-		//							<div>{attachs}</div>
-		//							<div className={styles.message_time}
-		//								style={username === element.author ? container.mine : container.not_mine}>{element.time.split('T')[1].slice(0, 5)}</div>
-		//							</div>
-		//						</div>
-		//					);
-		//				} else if (element.attachments.type === 'audio') {
-		//					list.push(<div className={styles.message_wrapper}
-		//						key={list.length} style={element.read ? container.read : container.not_read}>
-		//						<audio
-		//								controls
-		//								src={element.attachments.url}
-		//								className={styles.audio_output}
-		//								key={list.length}
-		//								style={username === element.author ? container.mine : container.not_mine}/></div>)
-		//				} else if (element.attachments.type === 'geolocation') {
-		//					list.push(
-		//						<div className={styles.message_wrapper}
-		//							key={list.length} style={element.read ? container.read : container.not_read}>
-		//							<div
-		//								className={styles.message_container}
-		//								style={username === element.author ? container.mine : container.not_mine}>
-		//								<div className={styles.message_avatar}
-		//									style={username === element.author ? container.mine : container.not_mine}><img className={styles.avatar} src={element.avatar} />{element.author}</div>
-		//								<div>{'Ваше местоположение: '}<a href={element.attachments.url}>{element.attachments.url}</a></div>
-		//								<div className={styles.message_time}
-		//									style={username === element.author ? container.mine : container.not_mine}>{element.time.split('T')[1].slice(0, 5)}</div>
-		//							</div>
-		//						</div>
-		//					)
-		//				} else {
-		//					list.push(
-		//						<div className={styles.message_wrapper}
-		//							key={list.length} style={element.read ? container.read : container.not_read}>
-		//							<div
-		//								className={styles.message_container}
-		//								style={username === element.author ? container.mine : container.not_mine}>
-		//								<div className={styles.message_avatar}
-		//									style={username === element.author ? container.mine : container.not_mine}><img className={styles.avatar} src={element.avatar} />{element.author}</div>
-		//								<div>{element.message}</div>
-		//								<div className={styles.message_time}
-		//									style={username === element.author ? container.mine : container.not_mine}>{element.time.split('T')[1].slice(0, 5)}</div>
-		//							</div>
-		//						</div>
-		//					)
-		//				}
-		//				return 0;
-		//			});
-		//		setMessages(list);
-		//		setLoading(false);
+					let list = [];
+					json.messages.map((element) => {
+						if (element.attachments.type === 'images') {
+							let attachs = [];
+							element.attachments.url.map((url) => {
+								attachs.push(<img
+										src={url}
+										key={attachs.length}
+											className={styles.message_attach_img}
+											alt=""/>);
+								return 0;
+							});
+							list.push(
+								<div className={styles.message_wrapper}
+									key={list.length}
+									style={element.read ? container.read : container.not_read}>
+									<div
+										className={styles.message_container}
+										style={username === element.author ? container.mine : container.not_mine}>
+										<div className={styles.message_avatar}
+											style={username === element.author ? container.mine : container.not_mine}><img className={styles.avatar} src={element.avatar} />{element.author}</div>
+									<div>{element.message}</div>
+									<div>{attachs}</div>
+									<div className={styles.message_time}
+										style={username === element.author ? container.mine : container.not_mine}>{element.time.split('T')[1].slice(0, 5)}</div>
+									</div>
+								</div>
+							);
+						} else if (element.attachments.type === 'audio') {
+							list.push(<div className={styles.message_wrapper}
+								key={list.length} style={element.read ? container.read : container.not_read}>
+								<audio
+										controls
+										src={element.attachments.url}
+										className={styles.audio_output}
+										key={list.length}
+										style={username === element.author ? container.mine : container.not_mine}/></div>)
+						} else if (element.attachments.type === 'geolocation') {
+							list.push(
+								<div className={styles.message_wrapper}
+									key={list.length} style={element.read ? container.read : container.not_read}>
+									<div
+										className={styles.message_container}
+										style={username === element.author ? container.mine : container.not_mine}>
+										<div className={styles.message_avatar}
+											style={username === element.author ? container.mine : container.not_mine}><img className={styles.avatar} src={element.avatar} />{element.author}</div>
+										<div>{'Ваше местоположение: '}<a href={element.attachments.url}>{element.attachments.url}</a></div>
+										<div className={styles.message_time}
+											style={username === element.author ? container.mine : container.not_mine}>{element.time.split('T')[1].slice(0, 5)}</div>
+									</div>
+								</div>
+							)
+						} else {
+							list.push(
+								<div className={styles.message_wrapper}
+									key={list.length} style={element.read ? container.read : container.not_read}>
+									<div
+										className={styles.message_container}
+										style={username === element.author ? container.mine : container.not_mine}>
+										<div className={styles.message_avatar}
+											style={username === element.author ? container.mine : container.not_mine}><img className={styles.avatar} src={element.avatar} />{element.author}</div>
+										<div>{element.message}</div>
+										<div className={styles.message_time}
+											style={username === element.author ? container.mine : container.not_mine}>{element.time.split('T')[1].slice(0, 5)}</div>
+									</div>
+								</div>
+							)
+						}
+						return 0;
+					});
+				setMessages(list);
+				setLoading(false);
 				});
 			} else if (res.status === 401) {
 				logout();
@@ -436,21 +439,21 @@ function Chat({ match, history, username, logout }) {
 	};
 
 	useEffect(() => {
-		fetch(`${url}/users/search_username/?username=${username}`, {
-			headers: {
-				'Authorization': `JWT ${localStorage.getItem('token')}`
-			},			
-		}).then(res => {
-			if (res.ok) {
-				res.json().then(json => {
-					if (!json.users.includes(name)) {
-						history.push(`${process.env.PUBLIC_URL}/`);
-					}
-				})
-			} else if (res.status === 401) {
-				logout();
-			}
-		});
+		// fetch(`${url}/users/search_username/?username=${username}`, {
+		// 	headers: {
+		// 		'Authorization': `JWT ${localStorage.getItem('token')}`
+		// 	},			
+		// }).then(res => {
+		// 	if (res.ok) {
+		// 		res.json().then(json => {
+		// 			if (!json.users.includes(name)) {
+		// 				history.push(`${process.env.PUBLIC_URL}/`);
+		// 			}
+		// 		})
+		// 	} else if (res.status === 401) {
+		// 		logout();
+		// 	}
+		// });
 		loadMessages();
 	}, []);
 
@@ -488,7 +491,7 @@ function Chat({ match, history, username, logout }) {
 				<div className={styles.chat_exit_button} onClick={() => history.push("/")}>
 					&#8678;
 				</div>
-				<div className={styles.chat_name}>{name}</div>
+				<div className={styles.chat_name}>{username}</div>
 			</div>
 			<div className={styles.messages_list} ref={chatBottom}>{messages}</div>
 			<form onSubmit={(event) => sendMessage(event, currentMessage.trim(), files)}
@@ -525,18 +528,4 @@ function Chat({ match, history, username, logout }) {
 	);
 }
 
-Chat.propTypes = {
-	username: PropTypes.string.isRequired,
-	logout: PropTypes.func.isRequired,
-	match: PropTypes.shape({
-		params: PropTypes.shape({
-			name: PropTypes.string.isRequired,
-		})
-	}),
-	history: PropTypes.shape({
-		push: PropTypes.func.isRequired,
-	})
-};
-
-export default withRouter(Chat);
-
+export default withRouter(GroupChat);

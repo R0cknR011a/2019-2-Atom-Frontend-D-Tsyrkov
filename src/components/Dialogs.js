@@ -38,21 +38,21 @@ function Dialogs({ history, username, logout }) {
 		}).then(res => {
 			if (res.ok) {
 				res.json().then((json) => {
-					let list = [];
-					json.result.map((element) => {
-						list.push(<DialogContainer
-							key={list.length}
-							name={element.opponent}
-							date={element.date ? element.date.split('T')[1].slice(0, 5) : ''}
-							check={element.read}
-							goToChat={() =>history.push(`${process.env.PUBLIC_URL}/chatWith/${element.opponent}`)}
-							message={element.last_message} 
-							avatar={element.avatar}
-							author={element.author}
-							username={username}/>)
-						return 0;
-					})
-					setChats(list);
+			//		let list = [];
+			//		json.result.map((element) => {
+			//			list.push(<DialogContainer
+			//				key={list.length}
+			//				name={element.opponent}
+			//				date={element.date ? element.date.split('T')[1].slice(0, 5) : ''}
+			//				check={element.read}
+			//				goToChat={() =>history.push(`${process.env.PUBLIC_URL}/chatWith/${element.opponent}`)}
+			//				message={element.last_message} 
+			//				avatar={element.avatar}
+			//				author={element.author}
+			//				username={username}/>)
+			//			return 0;
+			//		})
+			//		setChats(list);
 				})
 			} else if (res.status === 401) {
 				logout();
