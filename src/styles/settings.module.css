@@ -57,8 +57,7 @@
 }
 
 .fullname_input,
-.username_input
-{
+.username_input {
   font-size: 5vmin;
   width: 100%;
   background-color: rgb(60, 60, 60);

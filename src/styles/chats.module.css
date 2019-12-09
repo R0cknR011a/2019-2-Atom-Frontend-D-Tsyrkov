@@ -31,16 +31,6 @@
   background-color: rgb(70, 70, 70);
 }
 
-.user {
-  width: 98%;
-  cursor: pointer;
-  padding: 1%;
-}
-
-.user:hover {
-  background-color: rgb(10, 10, 10);
-}
-
 .menu_button {
   cursor: pointer;
   outline: none;
