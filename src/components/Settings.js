@@ -22,11 +22,11 @@ function Settings({ history, username, logout }) {
 					setAvatar(json.result.avatar);
 					setBio(json.result.bio);
 					setName(json.result.fullname);
-				})
+				});
 			} else if (res.status === 401) {
 				logout();
 			}
-		})
+		});
 	}, []);
 
 	const loadAvatar = (file) => {
@@ -46,8 +46,8 @@ function Settings({ history, username, logout }) {
 			} else if (res.status === 401) {
 				logout();
 			}
-		})
-	}
+		});
+	};
 
 	const handleUsername = (event) => {
 		setName(event.target.value);
@@ -59,7 +59,7 @@ function Settings({ history, username, logout }) {
 
 	const handleSubmit = () => {
 		if (name.split(' ').length !== 2) {
-			alert('Please enter your first name and last name')
+			alert('Please enter your first name and last name');
 		} else {
 			const data = new FormData();
 			data.append('fullname', name);
@@ -75,8 +75,8 @@ function Settings({ history, username, logout }) {
 				if (res.status === 401) {
 					logout();
 				}
-			})
-		}		
+			});
+		};
 	};
 
 	return (
@@ -87,7 +87,7 @@ function Settings({ history, username, logout }) {
 				<div className={styles.header_save} onClick={() => handleSubmit()} role="button" tabIndex={0} onKeyPress={() => {}}>&#10004;</div>
 			</div>
 			<form className={styles.main_form}>
-				<div className={styles.main_avatar} onClick={() => FileInputRef.current.click()}>
+				<div className={styles.main_avatar} tabIndex={0} role='button' onKeyPress={() => {}} onClick={() => FileInputRef.current.click()}>
 					<input type='file' accept='image/*' style={{'display': 'none'}}
 						ref={FileInputRef} onChange={(event) => loadAvatar(event.target.files)}/>
 					<img
@@ -117,6 +117,8 @@ Settings.propTypes = {
 	history: PropTypes.shape({
 		push: PropTypes.func.isRequired,
 	}).isRequired,
+	username: PropTypes.string.isRequired,
+	logout: PropTypes.func.isRequired,
 };
 
 export default withRouter(Settings);

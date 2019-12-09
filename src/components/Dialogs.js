@@ -14,8 +14,8 @@ function Dialogs({ history, username, logout }) {
 
 	const menuItem =
 		<div className={styles.header_menu}>
-			<div onClick={() => history.push(`${process.env.PUBLIC_URL}/settings`)}>Settings</div>
-			<div onClick={() => logout()}>Logout</div>
+			<div onClick={() => history.push(`${process.env.PUBLIC_URL}/settings`)} role='button' tabIndex={0} onKeyPress={() => {}}>Settings</div>
+			<div onClick={() => logout()} role='button' tabIndex={0} onKeyPress={() => {}}>Logout</div>
 		</div>;
 
 	const addInputMenu =
@@ -28,7 +28,7 @@ function Dialogs({ history, username, logout }) {
 				type="text"
 				onChange={(event) => HandleChange(event)}
 			/>
-		</div>
+		</div>;
 
 	const loadChats = () => {
 		fetch(`${url}/chats/get_all/?username=${username}`, {
@@ -38,55 +38,56 @@ function Dialogs({ history, username, logout }) {
 		}).then(res => {
 			if (res.ok) {
 				res.json().then((json) => {
-			//		let list = [];
-			//		json.result.map((element) => {
-			//			list.push(<DialogContainer
-			//				key={list.length}
-			//				name={element.opponent}
-			//				date={element.date ? element.date.split('T')[1].slice(0, 5) : ''}
-			//				check={element.read}
-			//				goToChat={() =>history.push(`${process.env.PUBLIC_URL}/chatWith/${element.opponent}`)}
-			//				message={element.last_message} 
-			//				avatar={element.avatar}
-			//				author={element.author}
-			//				username={username}/>)
-			//			return 0;
-			//		})
-			//		setChats(list);
-				})
+				// let list = [];
+				// json.result.map((element) => {
+				// list.push(<DialogContainer
+				// key={list.length}
+				// name={element.opponent}
+				// date={element.date ? element.date.split('T')[1].slice(0, 5) : ''}
+				// check={element.read}
+				// goToChat={() =>history.push(`${process.env.PUBLIC_URL}/chatWith/${element.opponent}`)}
+				// message={element.last_message} 
+				// avatar={element.avatar}
+				// author={element.author}
+				// username={username}/>)
+				// return 0;
+				// })
+				// setChats(list);
+				});
 			} else if (res.status === 401) {
 				logout();
 			}
 		});
-	}
+	};
 
 	function useInterval(callback, delay) {
 		const savedCallback = useRef();
-	  
+	
 		useEffect(() => {
-		  savedCallback.current = callback;
+			savedCallback.current = callback;
 		}, [callback]);
-	  
+
 		useEffect(() => {
 			function tick() {
 				savedCallback.current();
 			}
 			if (delay !== null) {
-				let id = setInterval(tick, delay);
+				const id = setInterval(tick, delay);
 				return () => clearInterval(id);
 			}
+			return 0;
 		}, [delay]);
 	}
 
 	const HandleChange = (event) => {
 		setValue(event.target.value);
-		let list = [];
+		const list = [];
 		usersList.map((element) => {
 			if (element.props.children.slice(0, event.target.value.length) === event.target.value) {
-				list.push(element)
+				list.push(element);
 			}
 			return 0;
-		})
+		});
 		setCurrentUsersList(list);
 	};
 
@@ -106,6 +107,7 @@ function Dialogs({ history, username, logout }) {
 					setChats([
 						...chats,
 						<DialogContainer
+							key={chats.length}
 							avatar={json.avatar}
 							name={opponent}
 							date=""
@@ -113,13 +115,13 @@ function Dialogs({ history, username, logout }) {
 							author='1'
 							username={username}
 							goToChat={() => history.push(`${process.env.PUBLIC_URL}/`)}/>
-					])
-				})
+					]);
+				});
 			} else if (res.status ===401) {
 				logout();
 			}
-		})
-	}
+		});
+	};
 
 	const loadPotentialChats = () => {
 		fetch(`${url}/users/get_all/?username=${username}`, {
@@ -129,31 +131,34 @@ function Dialogs({ history, username, logout }) {
 		}).then(res => {
 			if (res.ok) {
 				res.json().then(json => {
-					let list = [];
+					const list = [];
 					json.users.map((element) => {
 						list.push(
 							<div
+								role='button'
+								tabIndex={0}
+								onKeyPress={() => {}}
 								className={styles.user}
 								key={list.length}
 								onClick={() => {
 									setAdd(false);
 									addChat(element);
 								}}>{element}</div>
-						)
+						);
 						return 0;
-					})
+					});
 					setUsersList(list);
-					setCurrentUsersList(list);						
-				})
+					setCurrentUsersList(list);
+				});
 			} else if (res.status === 401) {
-				logout()
+				logout();
 			}
-		})
-	}
+		});
+	};
 
 	useEffect(() => {
 		loadChats();
-	}, [])
+	}, []);
 
 	useInterval(loadChats, 5000);
 
@@ -166,11 +171,11 @@ function Dialogs({ history, username, logout }) {
 			{menu ? menuItem : null}
 			<div className={styles.chat_list}>{chats}</div>
 			<div className={styles.add_button} onClick={() => {
-					setAdd(!toggleAdd);
-					if (!toggleAdd) {
-						loadPotentialChats();
-					}
-				}} role="button" tabIndex={0} onKeyPress={() => {}}>
+				setAdd(!toggleAdd);
+				if (!toggleAdd) {
+					loadPotentialChats();
+				}
+			}} role="button" tabIndex={0} onKeyPress={() => {}}>
 				&#x2b;
 			</div>
 			{toggleAdd ? (
@@ -182,7 +187,7 @@ function Dialogs({ history, username, logout }) {
 
 function DialogContainer({ avatar, name, message, date, check, goToChat, author, username }) {
 	return (
-		<div className={styles.dialog_container} onClick={() => goToChat()}>
+		<div className={styles.dialog_container} onClick={() => goToChat()} role='button' tabIndex={0} onKeyPress={() => {}}>
 			<div className={styles.dialog_avatar}>
 				<img
 					src={avatar}
@@ -216,6 +221,18 @@ DialogContainer.propTypes = {
 	message: PropTypes.string,
 	date: PropTypes.string,
 	check: PropTypes.bool,
+	avatar: PropTypes.string.isRequired,
+	goToChat: PropTypes.func.isRequired,
+	author: PropTypes.string.isRequired,
+	username: PropTypes.string.isRequired,
+};
+
+Dialogs.propTypes = {
+	history: PropTypes.shape({
+		push: PropTypes.func.isRequired,
+	}).isRequired,
+	username: PropTypes.string.isRequired,
+	logout: PropTypes.func.isRequired,
 };
 
 export default Dialogs;
