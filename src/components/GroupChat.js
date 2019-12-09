@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styles from '../styles/messages.module.css';
@@ -269,18 +269,19 @@ function GroupChat({ history, username, logout }) {
 									className={styles.message_container}
 									style={container.mine}>
 									<div className={styles.message_avatar}
-										style={container.mine}><img className={styles.avatar} src={json.avatar} />{username}</div>
+										style={container.mine}><img className={styles.avatar} alt='idk' src={json.avatar} />{username}</div>
 									<div>{value}</div>
 									<div className={styles.message_time} style={container.mine}>{getTime().split(' ')[1]}</div>
 								</div>
 							</div>,
 						]);
+					}).then(() => {
+						scrollToBottom();
 					});
 					setAttachments([]);
 					setClip(false);
 					setCurrentMessage('');
 					CurrMessageInput.current.value = '';
-					chatBottom.current.scrollIntoView({'block': 'end'});
 				} else if (res.status === 401) {
 					logout();
 				}
@@ -288,62 +289,7 @@ function GroupChat({ history, username, logout }) {
 		}
 	};
 
-
-	// const findKey = (elem) => {
-	// let i = 0;
-	// elem.style.backgroundColor = 'rgb(10, 10, 10)';
-	// while(elem.previousSibling !== null) {
-	// elem = elem.previousSibling;
-	// elem.style.backgroundColor = 'rgb(10, 10, 10)';
-	// i++;
-	// }
-	// return i;
-	// 
-	// onst readMessage = (event) => {
-	// let key = -1;
-	// const el = event.target;
-	// if (el.style.backgroundColor === 'rgb(30, 30, 30)' && el.children[0].style.float == 'left') {
-	// key = findKey(el);
-	// } else if (
-	// el.parentElement.style.backgroundColor === 'rgb(30, 30, 30)'
-	// &&
-	// el.style.float == 'left'
-	// ) {
-	// key = findKey(el.parentElement);
-	// } else if (
-	// el.parentElement.parentElement.style.backgroundColor === 'rgb(30, 30, 30)'
-	// &&
-	// el.parentElement.style.float == 'left'
-	// ) {
-	// key = findKey(el.parentElement.parentElement);
-	// } else if (
-	// el.parentElement.parentElement.parentElement.style.backgroundColor === 'rgb(30, 30, 30)'
-	// &&
-	// el.parentElement.parentElement.style.float == 'left'
-	// ) {
-	// key = findKey(el.parentElement.parentElement.parentElement);
-	// }
-	// if (key !== -1) {
-	// const data = new FormData();
-	// data.append('username', username);
-	// data.append('opponent', name);
-	// data.append('message_key', key);
-	// fetch(`${url}/messages/read_message/`, {
-	// method: 'POST',
-	// headers: {
-	// 'Authorization': `JWT ${localStorage.getItem('token')}`,
-	// },
-	// body: data,
-	// }).then(res => {
-	//  if (res.ok) {
-	// } else if (res.status === 401) {
-	// logout();
-	//  }
-	// })
-	//  }
-	// }
-
-	const loadMessages = () => {
+	const loadMessages = useCallback(() => {
 		fetch(`${url}/messages/get_all/?username=${username}`, {
 			headers: {
 				'Authorization': `JWT ${localStorage.getItem('token')}`
@@ -371,7 +317,7 @@ function GroupChat({ history, username, logout }) {
 										className={styles.message_container}
 										style={username === element.author ? container.mine : container.not_mine}>
 										<div className={styles.message_avatar}
-											style={username === element.author ? container.mine : container.not_mine}><img className={styles.avatar} src={element.avatar} />{element.author}</div>
+											style={username === element.author ? container.mine : container.not_mine}><img alt='idk' className={styles.avatar} src={element.avatar} />{element.author}</div>
 										<div>{element.message}</div>
 										<div>{attachs}</div>
 										<div className={styles.message_time}
@@ -400,7 +346,7 @@ function GroupChat({ history, username, logout }) {
 										className={styles.message_container}
 										style={username === element.author ? container.mine : container.not_mine}>
 										<div className={styles.message_avatar}
-											style={username === element.author ? container.mine : container.not_mine}><img className={styles.avatar} src={element.avatar} />{element.author}</div>
+											style={username === element.author ? container.mine : container.not_mine}><img alt='idk' className={styles.avatar} src={element.avatar} />{element.author}</div>
 										<div>Ваше местоположение: <a href={element.attachments.url}>{element.attachments.url}</a></div>
 										<div className={styles.message_time}
 											style={username === element.author ? container.mine : container.not_mine}>{element.time.split('T')[1].slice(0, 5)}</div>
@@ -415,7 +361,7 @@ function GroupChat({ history, username, logout }) {
 										className={styles.message_container}
 										style={username === element.author ? container.mine : container.not_mine}>
 										<div className={styles.message_avatar}
-											style={username === element.author ? container.mine : container.not_mine}><img className={styles.avatar} src={element.avatar} />{element.author}</div>
+											style={username === element.author ? container.mine : container.not_mine}><img alt='idk' className={styles.avatar} src={element.avatar} />{element.author}</div>
 										<div>{element.message}</div>
 										<div className={styles.message_time}
 											style={username === element.author ? container.mine : container.not_mine}>{element.time.split('T')[1].slice(0, 5)}</div>
@@ -432,37 +378,23 @@ function GroupChat({ history, username, logout }) {
 				logout();
 			}
 		});
-	};
+	}, [container.mine, container.not_mine, container.not_read, container.read, logout, username]);
 
 	const handleChange = (event) => {
 		setCurrentMessage(event.target.value);
 	};
 
+	const scrollToBottom = () => {
+		chatBottom.current.scrollIntoView({'block': 'end'});
+	};
+
 	useEffect(() => {
-		// fetch(`${url}/users/search_username/?username=${username}`, {
-		// headers: {
-		// 'Authorization': `JWT ${localStorage.getItem('token')}`
-		// },
-		// }).then(res => {
-		// if (res.ok) {
-		// res.json().then(json => {
-		// if (!json.users.includes(name)) {
-		// history.push(`${process.env.PUBLIC_URL}/`);
-		// }
-		// })
-		// } else if (res.status === 401) {
-		// logout();
-		// }
-		// });
 		loadMessages();
-	}, []);
+	}, [loadMessages]);
 
 	useEffect(() => {
 		CurrMessageInput.current.focus();
-	}, []);
-
-	useEffect(() => {
-		chatBottom.current.scrollIntoView({'block': 'end'});
+		scrollToBottom();
 	}, [loading]);
 
 	function useInterval(callback, delay) {

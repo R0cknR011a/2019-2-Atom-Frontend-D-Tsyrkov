@@ -11,7 +11,7 @@ function Chat({ match, history, username, logout }) {
 	const { name } = match.params;
 
 	const [messages, setMessages] = useState([]);
-	const [loading, setLoading] = useState(true);
+	// const [loading, setLoading] = useState(true);
 	const [currentMessage, setCurrentMessage] = useState('');
 	const [clipMenuToggle, setClip] = useState(false);
 	const [attachments, setAttachments] = useState([]);
@@ -375,7 +375,7 @@ function Chat({ match, history, username, logout }) {
 				logout();
 			}
 		});
-	});
+	}, [logout, name, username]);
 
 	const handleChange = (event) => {
 		setCurrentMessage(event.target.value);
@@ -404,9 +404,9 @@ function Chat({ match, history, username, logout }) {
 		CurrMessageInput.current.focus();
 	}, []);
 
-	useEffect(() => {
-		chatBottom.current.scrollIntoView({'block': 'end'});
-	}, [loading]);
+	// useEffect(() => {
+	// chatBottom.current.scrollIntoView({'block': 'end'});
+	// }, [loading]);
 
 	function useInterval(callback, delay) {
 		const savedCallback = useRef();

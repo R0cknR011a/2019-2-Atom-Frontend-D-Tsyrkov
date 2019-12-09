@@ -27,7 +27,7 @@ function Settings({ history, username, logout }) {
 				logout();
 			}
 		});
-	}, []);
+	}, [logout, username]);
 
 	const loadAvatar = (file) => {
 		const data = new FormData();

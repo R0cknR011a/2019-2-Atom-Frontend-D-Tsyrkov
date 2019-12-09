@@ -1,35 +1,36 @@
+
 .wrapper {
-    color: rgb(255, 255, 255);
-    margin: 10% auto;
-    text-align: center;
+  color: rgb(255, 255, 255);
+  margin: 10% auto;
+  text-align: center;
 }
 
 .auth_form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 90%;
-    margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+  margin: 0 auto;
 }
 
 .input {
-    outline: none;
-    cursor: text;
-    color: rgb(255, 255, 255);
-    background-color: rgb(60, 60, 60);
-    font-size: 5vmin;
-    margin: 2vmin;
-    padding: 1vmin;
+  outline: none;
+  cursor: text;
+  color: rgb(255, 255, 255);
+  background-color: rgb(60, 60, 60);
+  font-size: 5vmin;
+  margin: 2vmin;
+  padding: 1vmin;
 }
 
 .to_login {
-    cursor: pointer;
-    font-size: 6vmin;
+  cursor: pointer;
+  font-size: 6vmin;
 }
 
 .submit {
-    background-color: rgb(60, 60, 60);
-    color: rgb(255, 255, 255);
-    width: 50%;
-    font-size: 5vmin;
+  background-color: rgb(60, 60, 60);
+  color: rgb(255, 255, 255);
+  width: 50%;
+  font-size: 5vmin;
 }
