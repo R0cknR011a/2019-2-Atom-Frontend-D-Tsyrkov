@@ -378,7 +378,7 @@ function GroupChat({ history, username, logout }) {
 				logout();
 			}
 		});
-	}, [container.mine, container.not_mine, container.not_read, container.read, logout, username]);
+	}, []);
 
 	const handleChange = (event) => {
 		setCurrentMessage(event.target.value);
