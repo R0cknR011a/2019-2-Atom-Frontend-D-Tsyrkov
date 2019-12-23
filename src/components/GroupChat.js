@@ -6,6 +6,7 @@ import clip from './paper-clip-6-64.png';
 import play from './play-icon-white-png-8.jpg';
 import stop from './Stop-circle-01.svg';
 import url from '../constants/backend';
+import homeURL from '../constants/config';
 
 
 function GroupChat({ history, username, logout }) {
@@ -421,7 +422,7 @@ function GroupChat({ history, username, logout }) {
 	return (
 		<div className={styles.wrapper}>
 			<div className={styles.chat_header}>
-				<div className={styles.chat_exit_button} onClick={() => history.push('/')} role='button' tabIndex={0} onKeyPress={() => {}}>
+				<div className={styles.chat_exit_button} onClick={() => history.push(`${homeURL}`)} role='button' tabIndex={0} onKeyPress={() => {}}>
 					&#8678;
 				</div>
 				<div className={styles.chat_name}>{username}</div>
