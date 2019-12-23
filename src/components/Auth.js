@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import styles from '../styles/auth.module.css';
+import homeURL from '../constants/config';
 
 
 function Auth({ history, handleAuth }) {
@@ -39,7 +40,7 @@ function Auth({ history, handleAuth }) {
 				<input type='password' placeholder='REPEAT PASSWORD' className={styles.input} maxLength={16} onChange={(event) => handleRepeatPassword(event)} />
 				<button type='submit' className={styles.submit}>SUBMIT</button>
 			</form>
-			<div role="button" onClick={() => history.push(`${process.env.PUBLIC_URL}/login`)} className={styles.to_login} tabIndex={0} onKeyPress={() => {}} >Do you have an account?</div>
+			<div role="button" onClick={() => history.push(`${homeURL}/login`)} className={styles.to_login} tabIndex={0} onKeyPress={() => {}} >Do you have an account?</div>
 		</div>
 	);
 }

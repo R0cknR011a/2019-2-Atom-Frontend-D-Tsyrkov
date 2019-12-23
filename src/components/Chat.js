@@ -6,12 +6,12 @@ import clip from './paper-clip-6-64.png';
 import play from './play-icon-white-png-8.jpg';
 import stop from './Stop-circle-01.svg';
 import url from '../constants/backend';
+import homeURL from '../constants/config';
 
 function Chat({ match, history, username, logout }) {
 	const { name } = match.params;
 
 	const [messages, setMessages] = useState([]);
-	// const [loading, setLoading] = useState(true);
 	const [currentMessage, setCurrentMessage] = useState('');
 	const [clipMenuToggle, setClip] = useState(false);
 	const [attachments, setAttachments] = useState([]);
@@ -390,7 +390,7 @@ function Chat({ match, history, username, logout }) {
 			if (res.ok) {
 				res.json().then(json => {
 					if (!json.users.includes(name)) {
-						history.push(`${process.env.PUBLIC_URL}/`);
+						history.push(`${homeURL}/`);
 					}
 				});
 			} else if (res.status === 401) {

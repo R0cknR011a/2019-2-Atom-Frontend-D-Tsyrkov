@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styles from '../styles/settings.module.css';
 import url from '../constants/backend';
+import homeURL from '../constants/config';
 
 function Settings({ history, username, logout }) {
 	const [name, setName] = useState(null);
@@ -82,7 +83,7 @@ function Settings({ history, username, logout }) {
 	return (
 		<div className={styles.wrapper}>
 			<div className={styles.header}>
-				<div onClick={() => history.push(`${process.env.PUBLIC_URL}/`)} role="button" tabIndex={0} onKeyPress={() => {}} className={styles.exit}>&#8678;</div>
+				<div onClick={() => history.push(`${homeURL}/`)} role="button" tabIndex={0} onKeyPress={() => {}} className={styles.exit}>&#8678;</div>
 				<div className={styles.header_settings}>Settings</div>
 				<div className={styles.header_save} onClick={() => handleSubmit()} role="button" tabIndex={0} onKeyPress={() => {}}>&#10004;</div>
 			</div>

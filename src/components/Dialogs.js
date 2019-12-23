@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import styles from '../styles/chats.module.css';
 import url from '../constants/backend';
+import homeURL from '../constants/config';
 
 
 function Dialogs({ history, username, logout }) {
@@ -13,7 +14,7 @@ function Dialogs({ history, username, logout }) {
 
 	const menuItem =
 		<div className={styles.header_menu}>
-			<div onClick={() => history.push(`${process.env.PUBLIC_URL}/settings`)} role='button' tabIndex={0} onKeyPress={() => {}}>Settings</div>
+			<div onClick={() => history.push(`${homeURL}/settings`)} role='button' tabIndex={0} onKeyPress={() => {}}>Settings</div>
 			<div onClick={() => logout()} role='button' tabIndex={0} onKeyPress={() => {}}>Logout</div>
 		</div>;
 
@@ -37,19 +38,17 @@ function Dialogs({ history, username, logout }) {
 		}).then(res => {
 			if (res.ok) {
 				res.json().then((json) => {
-					const list = [];
-					json.result.map((element) => {
-						list.push(<DialogContainer
+					const list = json.result.map((element) => {
+						return (<DialogContainer
 							key={list.length}
 							name={element.opponent}
 							date={element.date ? element.date.split('T')[1].slice(0, 5) : ''}
 							check={element.read}
-							goToChat={() =>history.push(`${process.env.PUBLIC_URL}/chatWith/${element.opponent}`)}
+							goToChat={() =>history.push(`${homeURL}/chatWith/${element.opponent}`)}
 							message={element.last_message} 
 							avatar={element.avatar}
 							author={element.author}
 							username={username}/>);
-						return 0;
 					});
 					setChats(list);
 				});
@@ -80,11 +79,10 @@ function Dialogs({ history, username, logout }) {
 
 	const HandleChange = (event) => {
 		const list = [];
-		usersList.map((element) => {
+		usersList.forEach((element) => {
 			if (element.props.children.slice(0, event.target.value.length) === event.target.value) {
 				list.push(element);
 			}
-			return 0;
 		});
 		setCurrentUsersList(list);
 	};
@@ -112,7 +110,7 @@ function Dialogs({ history, username, logout }) {
 							check={false}
 							author='1'
 							username={username}
-							goToChat={() => history.push(`${process.env.PUBLIC_URL}/`)}/>
+							goToChat={() => history.push(`${homeURL}/`)}/>
 					]);
 				});
 			} else if (res.status ===401) {

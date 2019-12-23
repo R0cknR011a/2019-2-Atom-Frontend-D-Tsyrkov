@@ -16,4 +16,4 @@ deploy:
   on:
     branch:
       - master
-      - homework_08
+      - final_hw_08

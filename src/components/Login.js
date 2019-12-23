@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import styles from '../styles/login.module.css';
+import homeURL from '../constants/config';
 
 function Login({ history, login }) {
 
@@ -27,7 +28,7 @@ function Login({ history, login }) {
 				<button type='submit' className={styles.submit}>SUBMIT</button>
 			</form>
 			<div
-				onClick={() => history.push(`${process.env.PUBLIC_URL}/auth`)}
+				onClick={() => history.push(`${homeURL}/auth`)}
 				className={styles.to_auth}
 				tabIndex={0}
 				role='button'
