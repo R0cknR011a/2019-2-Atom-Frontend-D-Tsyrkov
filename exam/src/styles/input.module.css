@@ -1,0 +1,12 @@
+.main_form {
+    position: fixed;
+    top: 75%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.input {
+    font-size: 7vmin;
+    color: rgb(255, 255, 255);
+    background-color: rgb(10, 10, 10);
+}
