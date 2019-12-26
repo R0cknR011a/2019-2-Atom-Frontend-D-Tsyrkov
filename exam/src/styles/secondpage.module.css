@@ -1,0 +1,53 @@
+.wrapper {
+    background-repeat: no-repeat;
+	background-position: center center;
+	background-size: cover;
+	background-attachment: fixed;
+    height: 100vh;
+}
+
+.city {
+    font-size: 7vmin;
+    display: table;
+    margin: 10vh auto 0;
+    padding: 2%;
+    border-radius: 1vmin;
+    color: rgb(255, 255, 255);
+    background-color: rgb(30, 30, 30, .5);
+}
+
+.link {
+    position: relative;
+    border-radius: 1vmin;
+    top: 3vh;
+    left: 3vw;
+    background-color: rgb(30, 30, 30, .5);
+    padding: 0 2%;
+    margin: 1% auto;
+    text-decoration: none;
+	color: rgb(255, 255, 255);
+	font-size: 6vmin;
+}
+
+.data {
+    margin: 50vh auto 0;
+    display: flex;
+    justify-content: space-between;
+    width: 70%;
+}
+
+.temperature {
+    font-size: 7vmin;
+    padding: 2%;
+    border-radius: 1vmin;
+    color: rgb(255, 255, 255);
+    background-color: rgb(30, 30, 30, .5);
+}
+
+.humidity {
+    font-size: 7vmin;
+    padding: 2%;
+    border-radius: 1vmin;
+    color: rgb(255, 255, 255);
+    background-color: rgb(30, 30, 30, .5);
+}
