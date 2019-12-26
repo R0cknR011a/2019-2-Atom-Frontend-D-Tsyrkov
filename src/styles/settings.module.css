@@ -7,21 +7,21 @@
 
 .header {
   color: rgb(255, 255, 255);
-  display: grid;
+  display: flex;
   width: 100%;
-  font-size: 5vmin;
+  font-size: 8vmin;
   grid-template-columns: 10vw 80vw 10vw;
   background-color: rgb(70, 70, 70);
 }
 
 .header_save {
-  padding-left: 3vw;
+  margin: 0 2vmin;
   cursor: pointer;
   outline: none;
 }
 
 .exit {
-  padding-left: 3vw;
+  margin: 0 2vmin;
   cursor: pointer;
   outline: none;
 }
@@ -30,16 +30,18 @@
   width: 90%;
   flex-grow: 5;
   color: rgb(255, 255, 255);
-  font-size: 3vmin;
+  font-size: 5vmin;
   display: flex;
   flex-direction: column;
 }
 
 .main_avatar {
   align-self: center;
+  cursor: pointer;
 }
 
 .header_settings {
+  flex-grow: 2;
   text-align: center;
   color: rgb(255, 255, 255);
 }
@@ -54,8 +56,9 @@
   padding: 3vmin;
 }
 
-input {
-  font-size: 3vmin;
+.fullname_input,
+.username_input {
+  font-size: 5vmin;
   width: 100%;
   background-color: rgb(60, 60, 60);
   border: none;
@@ -63,7 +66,7 @@ input {
 }
 
 textarea {
-  font-size: 3vmin;
+  font-size: 5vmin;
   width: 100%;
   height: 90%;
   resize: none;
@@ -78,13 +81,6 @@ textarea {
 }
 
 .avatar_img {
-  width: 4em;
-}
-
-a,
-a:hover,
-a:focus,
-a:active {
-  text-decoration: none;
-  color: rgb(255, 255, 255);
+  height: 40vmin;
+  cursor: pointer;
 }
