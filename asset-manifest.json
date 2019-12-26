@@ -1,0 +1,28 @@
+{
+  "files": {
+    "main.css": "/2019-2-Atom-Frontend-D-Tsyrkov/static/css/main.0302270c.chunk.css",
+    "main.js": "/2019-2-Atom-Frontend-D-Tsyrkov/static/js/main.3bc03df1.chunk.js",
+    "main.js.map": "/2019-2-Atom-Frontend-D-Tsyrkov/static/js/main.3bc03df1.chunk.js.map",
+    "runtime-main.js": "/2019-2-Atom-Frontend-D-Tsyrkov/static/js/runtime-main.010a9f42.js",
+    "runtime-main.js.map": "/2019-2-Atom-Frontend-D-Tsyrkov/static/js/runtime-main.010a9f42.js.map",
+    "static/js/2.eb36c8fc.chunk.js": "/2019-2-Atom-Frontend-D-Tsyrkov/static/js/2.eb36c8fc.chunk.js",
+    "static/js/2.eb36c8fc.chunk.js.map": "/2019-2-Atom-Frontend-D-Tsyrkov/static/js/2.eb36c8fc.chunk.js.map",
+    "index.html": "/2019-2-Atom-Frontend-D-Tsyrkov/index.html",
+    "precache-manifest.6838550f12f3a52df436e2d571170684.js": "/2019-2-Atom-Frontend-D-Tsyrkov/precache-manifest.6838550f12f3a52df436e2d571170684.js",
+    "service-worker.js": "/2019-2-Atom-Frontend-D-Tsyrkov/service-worker.js",
+    "static/css/main.0302270c.chunk.css.map": "/2019-2-Atom-Frontend-D-Tsyrkov/static/css/main.0302270c.chunk.css.map",
+    "static/js/2.eb36c8fc.chunk.js.LICENSE": "/2019-2-Atom-Frontend-D-Tsyrkov/static/js/2.eb36c8fc.chunk.js.LICENSE",
+    "static/media/cloudy.jpg": "/2019-2-Atom-Frontend-D-Tsyrkov/static/media/cloudy.68a2164a.jpg",
+    "static/media/mist.jpg": "/2019-2-Atom-Frontend-D-Tsyrkov/static/media/mist.456e50a5.jpg",
+    "static/media/rain.jpg": "/2019-2-Atom-Frontend-D-Tsyrkov/static/media/rain.7d07ea23.jpg",
+    "static/media/snow.jpg": "/2019-2-Atom-Frontend-D-Tsyrkov/static/media/snow.dcade456.jpg",
+    "static/media/sun.jpg": "/2019-2-Atom-Frontend-D-Tsyrkov/static/media/sun.3a92b69a.jpg",
+    "static/media/thunderstorm.jpg": "/2019-2-Atom-Frontend-D-Tsyrkov/static/media/thunderstorm.4a1a91b6.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.010a9f42.js",
+    "static/js/2.eb36c8fc.chunk.js",
+    "static/css/main.0302270c.chunk.css",
+    "static/js/main.3bc03df1.chunk.js"
+  ]
+}
