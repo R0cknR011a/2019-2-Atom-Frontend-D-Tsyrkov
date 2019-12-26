@@ -127,21 +127,19 @@ function Dialogs({ history, username, logout }) {
 		}).then(res => {
 			if (res.ok) {
 				res.json().then(json => {
-					const list = [];
-					json.users.map((element) => {
-						list.push(
+					const list = json.users.map((element) => {
+						return(
 							<div
 								role='button'
 								tabIndex={0}
 								onKeyPress={() => {}}
 								className={styles.user}
-								key={list.length}
+								key={usersList.length}
 								onClick={() => {
 									setAdd(false);
 									addChat(element);
 								}}>{element}</div>
 						);
-						return 0;
 					});
 					setUsersList(list);
 					setCurrentUsersList(list);
